@@ -88,7 +88,7 @@
 
     <div class="line-items">
       <div class="line-item">
-        <span class="li-label">Business Plan × <span id="liQty">1</span></span>
+        <span class="li-label">Business Plan × <span id="liQty">12 months</span></span>
         <span class="li-val" id="liSubtotal">INR 3,999.00</span>
       </div>
       <div class="line-item">
@@ -156,16 +156,16 @@
 
         <div class="ml-breakdown">
           <div class="ml-br-row">
-            <span class="lbl">Plan</span>
+            <span class="lbl">Plan cost</span>
             <span class="val" id="mlBrPlan">INR 2,599.00</span>
-          </div>
-          <div class="ml-br-row">
-            <span class="lbl">GST (18%)</span>
-            <span class="val" id="mlBrGst">INR 467.82</span>
           </div>
           <div class="ml-br-row">
             <span class="lbl">Annual discount</span>
             <span class="val green" id="mlBrDiscount">−INR 1,400.00</span>
+          </div>
+          <div class="ml-br-row">
+            <span class="lbl">GST (18%)</span>
+            <span class="val" id="mlBrGst">INR 467.82</span>
           </div>
           <div class="ml-br-row total-row">
             <span class="lbl">Total</span>
@@ -186,7 +186,7 @@
 
       <!-- SUCCESS -->
       <div class="success-wrap" id="successWrap">
-        <div class="success-ring">✓</div>
+        <img src="assets/check.svg" class="success-check-img" alt="Payment successful" />
         <div class="success-title">Payment Successful!</div>
         <div class="success-sub">
           Your CloudSuite Business Plan is now active. A confirmation has been sent to your email.
@@ -206,6 +206,39 @@
           </div>
         </div>
         <button class="done-btn" onclick="closeModal()">Back to CloudSuite</button>
+      </div>
+
+      <!-- OTP SCREEN -->
+      <div class="otp-wrap" id="otpWrap">
+        <div class="otp-art">
+          <svg width="96" height="72" viewBox="0 0 96 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="12" width="72" height="48" rx="6" fill="#e8ecf8"/>
+            <rect x="4" y="12" width="72" height="48" rx="6" stroke="#c5cde8" stroke-width="1.5"/>
+            <rect x="4" y="22" width="72" height="10" fill="#c5cde8"/>
+            <rect x="12" y="38" width="28" height="6" rx="2" fill="#c5cde8"/>
+            <rect x="12" y="48" width="16" height="4" rx="2" fill="#d8ddf0"/>
+            <!-- Lock badge -->
+            <circle cx="74" cy="50" r="18" fill="#2d3c83"/>
+            <rect x="67" y="50" width="14" height="11" rx="2" fill="white"/>
+            <path d="M70 50v-3a4 4 0 018 0v3" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+            <circle cx="74" cy="56" r="1.5" fill="#2d3c83"/>
+          </svg>
+        </div>
+        <div class="otp-title">Authenticate your payment</div>
+        <div class="otp-sub">OTP sent to +91 98765 43210 for your card ending in <strong id="otpCardLast">••••</strong></div>
+        <div class="otp-inputs" id="otpInputs">
+          <input class="otp-digit" type="password" inputmode="numeric" maxlength="1" autocomplete="one-time-code" />
+          <input class="otp-digit" type="password" inputmode="numeric" maxlength="1" autocomplete="off" />
+          <input class="otp-digit" type="password" inputmode="numeric" maxlength="1" autocomplete="off" />
+          <input class="otp-digit" type="password" inputmode="numeric" maxlength="1" autocomplete="off" />
+          <input class="otp-digit" type="password" inputmode="numeric" maxlength="1" autocomplete="off" />
+          <input class="otp-digit" type="password" inputmode="numeric" maxlength="1" autocomplete="off" />
+        </div>
+        <div class="otp-meta">
+          <button class="otp-skip" onclick="skipOtp()">Skip OTP</button>
+          <span class="otp-resend" id="otpResend">Resend OTP in <span id="otpCountdown">30</span>s</span>
+        </div>
+        <button class="m-pay-btn" id="otpContinueBtn" onclick="confirmOtp()">Continue</button>
       </div>
 
       <!-- PAYMENT UI -->
@@ -235,7 +268,7 @@
                   <div class="qr-section">
                     <div class="qr-wrap">
                       <div class="qr-box">
-                        <img src="assets/qr-code.svg" style="position:absolute;inset:0;width:100%;height:100%;display:block;" alt="UPI QR Code" />
+                        <img src="assets/qr-code.svg" style="width:100%;height:100%;display:block;" alt="UPI QR Code" />
                       </div>
                       <div class="qr-timer" id="qrTimer">09:47</div>
                     </div>
@@ -243,31 +276,21 @@
                     <div class="qr-sub">Open your UPI app and scan to pay INR <span id="qrAmt">3,066.82</span></div>
                   </div>
 
-                  <div class="upi-apps-label">Scan using one of these apps</div>
                   <div class="upi-apps-row">
                     <div class="upi-app" onclick="simulatePay('UPI — Google Pay')">
-                      <div class="upi-app-icon" style="background:#fff;border:1px solid #e5e7eb;">
-                        <svg width="24" height="24" viewBox="0 0 24 24"><text y="18" font-size="18">G</text></svg>
-                      </div>
-                      <div class="upi-app-name">GPay</div>
+                      <div class="upi-app-icon"><img src="assets/upi-googlepay.svg" alt="Google Pay" /></div>
                     </div>
                     <div class="upi-app" onclick="simulatePay('UPI — PhonePe')">
-                      <div class="upi-app-icon" style="background:#5f259f;">
-                        <svg width="24" height="24" viewBox="0 0 24 24"><text y="18" fill="white" font-size="15" font-weight="bold">Pe</text></svg>
-                      </div>
-                      <div class="upi-app-name">PhonePe</div>
+                      <div class="upi-app-icon"><img src="assets/upi-phonepe.svg" alt="PhonePe" /></div>
                     </div>
-                    <div class="upi-app" onclick="simulatePay('UPI — Paytm')">
-                      <div class="upi-app-icon" style="background:#00baf2;">
-                        <svg width="24" height="24" viewBox="0 0 24 24"><text y="18" fill="white" font-size="12" font-weight="bold">Pay</text></svg>
-                      </div>
-                      <div class="upi-app-name">Paytm</div>
+                    <div class="upi-app" onclick="simulatePay('UPI — CRED')">
+                      <div class="upi-app-icon"><img src="assets/upi-cred.png" alt="CRED" /></div>
+                    </div>
+                    <div class="upi-app" onclick="simulatePay('UPI — Amazon Pay')">
+                      <div class="upi-app-icon"><img src="assets/upi-amazonpay.svg" alt="Amazon Pay" /></div>
                     </div>
                     <div class="upi-app" onclick="simulatePay('UPI — BHIM')">
-                      <div class="upi-app-icon" style="background:#0f3d6b;">
-                        <svg width="24" height="24" viewBox="0 0 24 24"><text y="17" fill="white" font-size="11" font-weight="bold">BHIM</text></svg>
-                      </div>
-                      <div class="upi-app-name">BHIM</div>
+                      <div class="upi-app-icon"><img src="assets/upi-bhim.png" alt="BHIM" /></div>
                     </div>
                   </div>
 
@@ -294,54 +317,47 @@
                   <p class="upi-mobile-hint">Select your UPI app to pay INR <span class="upi-mobile-amt">3,066.82</span></p>
                   <div class="upi-app-grid">
                     <div class="upi-grid-item" onclick="simulatePay('UPI — Google Pay')">
-                      <div class="ugi-icon" style="background:#fff;border:1.5px solid #e5e7eb;">
-                        <svg width="26" height="26" viewBox="0 0 24 24"><text y="18" font-size="18">G</text></svg>
-                      </div>
+                      <div class="ugi-icon"><img src="assets/upi-googlepay.svg" alt="Google Pay" /></div>
                       <div class="ugi-name">Google Pay</div>
                     </div>
                     <div class="upi-grid-item" onclick="simulatePay('UPI — PhonePe')">
-                      <div class="ugi-icon" style="background:#5f259f;">
-                        <svg width="26" height="26" viewBox="0 0 24 24"><text y="18" fill="white" font-size="15" font-weight="bold">Pe</text></svg>
-                      </div>
+                      <div class="ugi-icon"><img src="assets/upi-phonepe.svg" alt="PhonePe" /></div>
                       <div class="ugi-name">PhonePe</div>
                     </div>
                     <div class="upi-grid-item" onclick="simulatePay('UPI — Paytm')">
-                      <div class="ugi-icon" style="background:#00baf2;">
-                        <svg width="26" height="26" viewBox="0 0 24 24"><text y="18" fill="white" font-size="12" font-weight="bold">Pay</text></svg>
-                      </div>
+                      <div class="ugi-icon"><img src="assets/upi-paytm.svg" alt="Paytm" /></div>
                       <div class="ugi-name">Paytm</div>
                     </div>
                     <div class="upi-grid-item" onclick="simulatePay('UPI — CRED')">
-                      <div class="ugi-icon" style="background:#1c1c1c;">
-                        <svg width="26" height="26" viewBox="0 0 24 24"><text y="17" fill="white" font-size="13" font-weight="bold">C</text></svg>
-                      </div>
+                      <div class="ugi-icon"><img src="assets/upi-cred.png" alt="CRED" /></div>
                       <div class="ugi-name">CRED</div>
                     </div>
                     <div class="upi-grid-item" onclick="simulatePay('UPI — BHIM')">
-                      <div class="ugi-icon" style="background:#0f3d6b;">
-                        <svg width="26" height="26" viewBox="0 0 24 24"><text y="17" fill="white" font-size="9" font-weight="bold">BHIM</text></svg>
-                      </div>
+                      <div class="ugi-icon"><img src="assets/upi-bhim.png" alt="BHIM" /></div>
                       <div class="ugi-name">BHIM</div>
                     </div>
-                    <div class="upi-grid-item" onclick="simulatePay('UPI App')">
-                      <div class="ugi-icon" style="background:var(--gray-100);color:var(--gray-500);font-size:18px;font-weight:700;">···</div>
-                      <div class="ugi-name">More Apps</div>
+                    <div class="upi-grid-item" onclick="simulatePay('UPI — Amazon Pay')">
+                      <div class="ugi-icon"><img src="assets/upi-amazonpay.svg" alt="Amazon Pay" /></div>
+                      <div class="ugi-name">Amazon Pay</div>
                     </div>
                   </div>
 
                   <div class="upi-divider"><span>or</span></div>
 
-                  <div class="upi-id-hint">
-                    <span>💡</span>
-                    <span>Enter any UPI ID like <code>name@okicici</code> or <code>9999999999@upi</code></span>
+                  <button class="upi-id-link" id="mobileUpiIdLink" onclick="toggleMobileUpiId(this)">Enter UPI ID instead →</button>
+                  <div id="mobileUpiIdForm" style="display:none;margin-top:12px;">
+                    <div class="upi-id-hint">
+                      <span>💡</span>
+                      <span>Enter any UPI ID like <code>name@okicici</code> or <code>9999999999@upi</code></span>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">UPI ID / VPA</label>
+                      <input class="form-input" type="text" placeholder="yourname@okicici" id="upiIdMobile" />
+                    </div>
+                    <button class="m-pay-btn" onclick="simulatePay('UPI ID')">
+                      Verify & Pay INR <span class="upi-mobile-amt">3,066.82</span>
+                    </button>
                   </div>
-                  <div class="form-group">
-                    <label class="form-label">UPI ID / VPA</label>
-                    <input class="form-input" type="text" placeholder="yourname@okicici" id="upiIdMobile" />
-                  </div>
-                  <button class="m-pay-btn" onclick="simulatePay('UPI ID')">
-                    Verify & Pay INR <span class="upi-mobile-amt">3,066.82</span>
-                  </button>
                 </div>
 
               </div><!-- acc-body -->
@@ -394,34 +410,70 @@
                   <label class="form-label">Card Number</label>
                   <div class="card-type-wrap">
                     <input class="form-input" id="cardNum" type="text" inputmode="numeric" maxlength="19"
-                      placeholder="1234  5678  9012  3456" oninput="fmtCard(this)" />
+                      placeholder="1234  5678  9012  3456" oninput="fmtCard(this); clearFieldError('cardNum')" />
                     <span class="card-type-icon" id="cardIcon"></span>
                   </div>
+                  <span class="field-error" id="errCardNum"></span>
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">Cardholder Name</label>
                   <input class="form-input" id="cardHolder" type="text" placeholder="Priya Sharma"
-                    oninput="document.getElementById('cvName').textContent = this.value.toUpperCase() || 'YOUR NAME'" />
+                    oninput="document.getElementById('cvName').textContent = this.value.toUpperCase() || 'YOUR NAME'; clearFieldError('cardHolder')" />
+                  <span class="field-error" id="errCardHolder"></span>
                 </div>
 
                 <div class="form-row">
                   <div class="form-group">
                     <label class="form-label">Expiry</label>
                     <input class="form-input" id="cardExp" type="text" inputmode="numeric" maxlength="5"
-                      placeholder="MM / YY" oninput="fmtExpiry(this)" />
+                      placeholder="MM / YY" oninput="fmtExpiry(this); clearFieldError('cardExp')" />
+                    <span class="field-error" id="errCardExp"></span>
                   </div>
                   <div class="form-group">
                     <label class="form-label">CVV</label>
-                    <input class="form-input" id="cardCvv" type="password" inputmode="numeric" maxlength="4" placeholder="•••" />
+                    <input class="form-input" id="cardCvv" type="password" inputmode="numeric" maxlength="4" placeholder="•••"
+                      oninput="clearFieldError('cardCvv')" />
+                    <span class="field-error" id="errCardCvv"></span>
                   </div>
                 </div>
 
-                <button class="m-pay-btn" onclick="simulatePay('Card')">
+                <button class="m-pay-btn" onclick="payCard()">
                   Pay INR <span id="cardBtnAmt">3,066.82</span>
                 </button>
               </div><!-- acc-body -->
             </div><!-- acc-item card -->
+
+            <!-- ── Net Banking ── -->
+            <div class="acc-item" id="acc-netbanking">
+              <div class="acc-header" onclick="toggleAccordion('netbanking')">
+                <div class="acc-header-left">
+                  <div>
+                    <div class="acc-title">Net Banking</div>
+                    <div class="acc-subtitle">HDFC · ICICI · SBI & more</div>
+                  </div>
+                </div>
+                <svg class="acc-chevron" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" width="18" height="18">
+                  <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="acc-body">
+                <input class="nb-search" type="text" placeholder="Search your bank…" oninput="filterBanks(this.value)" />
+                <div class="nb-grid" id="nbGrid">
+                  <div class="nb-bank" onclick="simulatePay('Net Banking — HDFC')"><div class="nb-icon" style="background:#004c97;">HD</div><span>HDFC Bank</span></div>
+                  <div class="nb-bank" onclick="simulatePay('Net Banking — ICICI')"><div class="nb-icon" style="background:#b02a30;">IC</div><span>ICICI Bank</span></div>
+                  <div class="nb-bank" onclick="simulatePay('Net Banking — SBI')"><div class="nb-icon" style="background:#2d6bb5;">SB</div><span>State Bank of India</span></div>
+                  <div class="nb-bank" onclick="simulatePay('Net Banking — Axis')"><div class="nb-icon" style="background:#97144d;">AX</div><span>Axis Bank</span></div>
+                  <div class="nb-bank" onclick="simulatePay('Net Banking — Kotak')"><div class="nb-icon" style="background:#ee3124;">KO</div><span>Kotak Mahindra</span></div>
+                  <div class="nb-bank" onclick="simulatePay('Net Banking — Yes')"><div class="nb-icon" style="background:#004b8d;">YB</div><span>Yes Bank</span></div>
+                  <div class="nb-bank" onclick="simulatePay('Net Banking — BoB')"><div class="nb-icon" style="background:#f47920;">BB</div><span>Bank of Baroda</span></div>
+                  <div class="nb-bank" onclick="simulatePay('Net Banking — PNB')"><div class="nb-icon" style="background:#2b3990;">PN</div><span>Punjab National</span></div>
+                  <div class="nb-bank" onclick="simulatePay('Net Banking — IDFC')"><div class="nb-icon" style="background:#9b2335;">ID</div><span>IDFC First Bank</span></div>
+                  <div class="nb-bank" onclick="simulatePay('Net Banking — IndusInd')"><div class="nb-icon" style="background:#1b4f91;">IN</div><span>IndusInd Bank</span></div>
+                </div>
+                <p class="nb-empty" id="nbEmpty" style="display:none;">No banks match your search.</p>
+              </div>
+            </div><!-- acc-item netbanking -->
 
             <!-- ── Bank Transfer ── -->
             <div class="acc-item" id="acc-bank">
@@ -451,23 +503,23 @@
                   <div class="vban-header">Virtual Bank Account Details</div>
                   <div class="vban-row">
                     <span class="vr-label">Account Number</span>
-                    <span class="vr-val">XFLOW8824001991 <button class="copy-btn" onclick="doCopy('XFLOW8824001991', this)">Copy</button></span>
+                    <span class="vr-val">XFLOW8824001991 <button class="copy-btn" onclick="doCopy('XFLOW8824001991', this)" title="Copy"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M3 11H2a1 1 0 01-1-1V2a1 1 0 011-1h8a1 1 0 011 1v1" stroke="currentColor" stroke-width="1.5"/></svg></button></span>
                   </div>
                   <div class="vban-row">
                     <span class="vr-label">IFSC Code</span>
-                    <span class="vr-val">HSBC0110005 <button class="copy-btn" onclick="doCopy('HSBC0110005', this)">Copy</button></span>
+                    <span class="vr-val">HSBC0110005 <button class="copy-btn" onclick="doCopy('HSBC0110005', this)" title="Copy"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M3 11H2a1 1 0 01-1-1V2a1 1 0 011-1h8a1 1 0 011 1v1" stroke="currentColor" stroke-width="1.5"/></svg></button></span>
                   </div>
                   <div class="vban-row">
                     <span class="vr-label">Account Name</span>
-                    <span class="vr-val" style="font-family:inherit;">Xflow Payments Pvt Ltd</span>
+                    <span class="vr-val" style="font-family:inherit;">Xflow Payments Pvt Ltd <button class="copy-btn" onclick="doCopy('Xflow Payments Pvt Ltd', this)" title="Copy"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M3 11H2a1 1 0 01-1-1V2a1 1 0 011-1h8a1 1 0 011 1v1" stroke="currentColor" stroke-width="1.5"/></svg></button></span>
                   </div>
                   <div class="vban-row">
                     <span class="vr-label">Bank</span>
-                    <span class="vr-val" style="font-family:inherit;">HSBC India</span>
+                    <span class="vr-val" style="font-family:inherit;">HSBC India <button class="copy-btn" onclick="doCopy('HSBC India', this)" title="Copy"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M3 11H2a1 1 0 01-1-1V2a1 1 0 011-1h8a1 1 0 011 1v1" stroke="currentColor" stroke-width="1.5"/></svg></button></span>
                   </div>
                   <div class="vban-row">
                     <span class="vr-label">Exact Amount</span>
-                    <span class="vr-val amount" id="vbanAmt">INR 3,066.82 <button class="copy-btn" onclick="doCopy('3066.82', this)">Copy</button></span>
+                    <span class="vr-val amount" id="vbanAmt">INR 3,066.82 <button class="copy-btn" onclick="doCopy('3066.82', this)" title="Copy"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M3 11H2a1 1 0 01-1-1V2a1 1 0 011-1h8a1 1 0 011 1v1" stroke="currentColor" stroke-width="1.5"/></svg></button></span>
                   </div>
                 </div>
 
@@ -475,9 +527,6 @@
                   ⚠️ Transfer the <strong>exact amount</strong> to ensure automatic reconciliation. Include order reference <code style="background:var(--gray-100);padding:1px 5px;border-radius:3px;font-size:11px;">CS-<span id="vbanRef">DEMO2025</span></code> in remarks.
                 </p>
 
-                <button class="m-pay-btn" onclick="simulatePay('Bank Transfer (IMPS)')">
-                  I've Completed the Transfer
-                </button>
               </div><!-- acc-body -->
             </div><!-- acc-item bank -->
 
@@ -504,13 +553,13 @@
 
     <!-- MOBILE BREAKDOWN SHEET -->
     <div class="mobile-sheet" id="mobileSheet">
-      <div class="mobile-sheet-handle"></div>
+      <div class="mobile-sheet-handle" onclick="toggleMobileSheet()"></div>
       <div class="ms-title">Order Summary</div>
       <div class="ms-rows">
-        <div class="ms-row"><span>Plan</span><span id="msBrPlan">INR 2,599.00</span></div>
-        <div class="ms-row"><span>GST (18%)</span><span id="msBrGst">INR 467.82</span></div>
-        <div class="ms-row ms-green"><span>Annual discount</span><span id="msBrDiscount">−INR 1,400.00</span></div>
-        <div class="ms-row ms-total"><span>Total</span><span id="msBrTotal">INR 3,066.82</span></div>
+        <div class="ms-row"><span>Plan</span><span id="msBrPlan">INR 47,988.00</span></div>
+        <div class="ms-row ms-green"><span>Annual discount</span><span id="msBrDiscount">−INR 16,800.00</span></div>
+        <div class="ms-row"><span>GST (18%)</span><span id="msBrGst">INR 5,613.84</span></div>
+        <div class="ms-row ms-total"><span>Total</span><span id="msBrTotal">INR 36,801.84</span></div>
       </div>
     </div>
 
@@ -683,17 +732,20 @@
   // ── State ──
   let plan = 'annual';
   const PRICES = {
-    monthly:  { base: 3999, discount: 0,    label: 'per month · billed monthly' },
-    annual:   { base: 3999, discount: 1400, label: 'per year · billed annually'  }
+    monthly: { base: 3999, discount: 0,    months: 1,  label: 'per month · billed monthly' },
+    annual:  { base: 3999, discount: 1400, months: 12, label: 'per month · billed annually' }
   };
 
   function getPriceData() {
     const p = PRICES[plan];
-    const net = p.base - p.discount;
-    const gst = parseFloat((net * 0.18).toFixed(2));
-    const total = parseFloat((net + gst).toFixed(2));
-    const usd = (total / 83.4).toFixed(2);
-    return { ...p, net, gst, total, usd };
+    const perMonth      = p.base - p.discount;           // hero price: 2,599 or 3,999
+    const subtotal      = p.base * p.months;              // line item: 47,988 or 3,999
+    const discountTotal = p.discount * p.months;          // line item: 16,800 or 0
+    const net           = subtotal - discountTotal;       // taxable amount
+    const gst           = parseFloat((net * 0.18).toFixed(2));
+    const total         = parseFloat((net + gst).toFixed(2));
+    const usd           = (total / 83.4).toFixed(2);
+    return { ...p, perMonth, subtotal, discountTotal, net, gst, total, usd };
   }
 
   function fmt(n) {
@@ -710,19 +762,20 @@
   function refresh() {
     const d = getPriceData();
     // Product page
-    document.getElementById('priceMain').textContent = fmt(d.net);
+    document.getElementById('priceMain').textContent = fmt(d.perMonth);
     document.getElementById('pricePeriod').textContent = d.label;
     document.getElementById('priceOriginal').textContent = plan === 'annual' ? 'INR ' + fmt(d.base) : '';
     document.querySelector('[id="priceOriginal"]').nextElementSibling.style.display = plan === 'annual' ? '' : 'none';
-    document.getElementById('liSubtotal').textContent = 'INR ' + fmt(d.base);
-    document.getElementById('liDiscount').textContent = plan === 'annual' ? '−INR ' + fmt(d.discount) : '—';
+    document.getElementById('liQty').textContent = plan === 'annual' ? '12 months' : '1 month';
+    document.getElementById('liSubtotal').textContent = 'INR ' + fmt(d.subtotal);
+    document.getElementById('liDiscount').textContent = plan === 'annual' ? '−INR ' + fmt(d.discountTotal) : '—';
     document.getElementById('liGst').textContent = 'INR ' + fmt(d.gst);
     document.getElementById('liTotal').textContent = 'INR ' + fmt(d.total);
     // Modal
     document.getElementById('mlAmount').textContent = fmt(d.total);
-    document.getElementById('mlBrPlan').textContent = 'INR ' + fmt(d.net);
+    document.getElementById('mlBrPlan').textContent = 'INR ' + fmt(d.subtotal);
     document.getElementById('mlBrGst').textContent = 'INR ' + fmt(d.gst);
-    document.getElementById('mlBrDiscount').textContent = plan === 'annual' ? '−INR ' + fmt(d.discount) : '—';
+    document.getElementById('mlBrDiscount').textContent = plan === 'annual' ? '−INR ' + fmt(d.discountTotal) : '—';
     document.getElementById('mlBrTotal').textContent = 'INR ' + fmt(d.total);
     document.getElementById('mlProduct').textContent = 'Business Plan · ' + (plan === 'annual' ? 'Annual' : 'Monthly');
     // Buttons
@@ -732,7 +785,7 @@
       if (el) el.textContent = amtStr;
     });
     document.getElementById('qrAmt').textContent = amtStr;
-    document.getElementById('vbanAmt').innerHTML = 'INR ' + amtStr + ' <button class="copy-btn" onclick="doCopy(\'' + d.total + '\', this)">Copy</button>';
+    document.getElementById('vbanAmt').innerHTML = 'INR ' + amtStr + ' <button class="copy-btn" onclick="doCopy(\'' + d.total + '\', this)" title="Copy"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M3 11H2a1 1 0 01-1-1V2a1 1 0 011-1h8a1 1 0 011 1v1" stroke="currentColor" stroke-width="1.5"/></svg></button>';
     document.getElementById('txnAmt').textContent = 'INR ' + amtStr;
     // Mobile UPI amount spans
     document.querySelectorAll('.upi-mobile-amt').forEach(el => el.textContent = amtStr);
@@ -740,11 +793,11 @@
     const mobileAmt = document.getElementById('mobileAmt');
     if (mobileAmt) mobileAmt.textContent = amtStr;
     const msBrPlan = document.getElementById('msBrPlan');
-    if (msBrPlan) msBrPlan.textContent = 'INR ' + fmt(d.net);
+    if (msBrPlan) msBrPlan.textContent = 'INR ' + fmt(d.subtotal);
     const msBrGst = document.getElementById('msBrGst');
     if (msBrGst) msBrGst.textContent = 'INR ' + fmt(d.gst);
     const msBrDiscount = document.getElementById('msBrDiscount');
-    if (msBrDiscount) msBrDiscount.textContent = plan === 'annual' ? '−INR ' + fmt(d.discount) : '—';
+    if (msBrDiscount) msBrDiscount.textContent = plan === 'annual' ? '−INR ' + fmt(d.discountTotal) : '—';
     const msBrTotal = document.getElementById('msBrTotal');
     if (msBrTotal) msBrTotal.textContent = 'INR ' + fmt(d.total);
   }
@@ -754,14 +807,19 @@
     refresh();
     document.getElementById('overlay').classList.add('open');
     document.getElementById('successWrap').classList.remove('show');
+    document.getElementById('otpWrap').classList.remove('show');
+    clearInterval(otpTimer);
     document.getElementById('payUi').style.display = 'flex';
     document.body.style.overflow = 'hidden';
     // Reset accordion: UPI open by default
     document.querySelectorAll('.acc-item').forEach(item => item.classList.remove('open'));
     document.getElementById('acc-upi').classList.add('open');
-    // Hide desktop UPI ID form
+    // Hide UPI ID forms and restore link buttons
     const duf = document.getElementById('desktopUpiIdForm');
     if (duf) duf.style.display = 'none';
+    const muf = document.getElementById('mobileUpiIdForm');
+    if (muf) muf.style.display = 'none';
+    document.querySelectorAll('.upi-id-link').forEach(el => el.style.display = '');
     startQrTimer();
     if (autofill) setTimeout(doAutofill, 60);
   }
@@ -770,6 +828,8 @@
     document.getElementById('overlay').classList.remove('open');
     document.body.style.overflow = '';
     clearInterval(qrInterval);
+    clearInterval(otpTimer);
+    document.getElementById('otpWrap').classList.remove('show');
     resetCardForm();
     // Reset mobile sheet
     document.getElementById('mobileSheet').classList.remove('open');
@@ -798,13 +858,32 @@
     if (autofill) setTimeout(doAutofill, 30);
   }
 
+  // ── Net Banking search filter ──
+  function filterBanks(q) {
+    const term = q.toLowerCase();
+    const banks = document.querySelectorAll('#nbGrid .nb-bank');
+    let visible = 0;
+    banks.forEach(b => {
+      const match = b.textContent.toLowerCase().includes(term);
+      b.style.display = match ? '' : 'none';
+      if (match) visible++;
+    });
+    document.getElementById('nbEmpty').style.display = visible === 0 ? 'block' : 'none';
+  }
+
+  // ── Mobile UPI ID toggle ──
+  function toggleMobileUpiId(btn) {
+    document.getElementById('mobileUpiIdForm').style.display = 'block';
+    btn.style.display = 'none';
+    if (autofill) setTimeout(doAutofill, 30);
+  }
+
   // ── Desktop UPI ID toggle ──
   function toggleDesktopUpiId(btn) {
     const form = document.getElementById('desktopUpiIdForm');
-    const isVisible = form.style.display !== 'none';
-    form.style.display = isVisible ? 'none' : 'block';
-    btn.textContent = isVisible ? 'Enter UPI ID instead →' : '← Back to QR';
-    if (autofill && !isVisible) setTimeout(doAutofill, 30);
+    form.style.display = 'block';
+    btn.style.display = 'none';
+    if (autofill) setTimeout(doAutofill, 30);
   }
 
   // QR countdown timer
@@ -849,6 +928,7 @@
     ['cardNum','cardHolder','cardExp','cardCvv'].forEach(id => {
       const el = document.getElementById(id);
       if (el) el.value = '';
+      clearFieldError(id);
     });
     document.getElementById('cvCardNum').textContent = '•••• •••• •••• ••••';
     document.getElementById('cvName').textContent = 'YOUR NAME';
@@ -856,31 +936,158 @@
     document.getElementById('cvNetwork').textContent = '—';
   }
 
+  // ── Card validation ──
+  function setFieldError(id, msg) {
+    const inp = document.getElementById(id);
+    const err = document.getElementById('err' + id[0].toUpperCase() + id.slice(1));
+    if (inp) inp.classList.add('error');
+    if (err) err.textContent = msg;
+  }
+
+  function clearFieldError(id) {
+    const inp = document.getElementById(id);
+    const err = document.getElementById('err' + id[0].toUpperCase() + id.slice(1));
+    if (inp) inp.classList.remove('error');
+    if (err) err.textContent = '';
+  }
+
+  function validateCard() {
+    let valid = true;
+    const num  = (document.getElementById('cardNum').value  || '').replace(/\s/g, '');
+    const name = (document.getElementById('cardHolder').value || '').trim();
+    const exp  = (document.getElementById('cardExp').value  || '').trim();
+    const cvv  = (document.getElementById('cardCvv').value  || '').trim();
+    if (num.length < 16)  { setFieldError('cardNum',    'Enter a valid 16-digit card number'); valid = false; }
+    if (!name)            { setFieldError('cardHolder', 'Enter the cardholder name');          valid = false; }
+    if (exp.length < 5)   { setFieldError('cardExp',    'Enter expiry as MM/YY');              valid = false; }
+    if (cvv.length < 3)   { setFieldError('cardCvv',    'Enter a valid CVV');                  valid = false; }
+    return valid;
+  }
+
+  function payCard() {
+    if (validateCard()) simulatePay('Card');
+  }
+
   // ── Simulate payment ──
   function simulatePay(method) {
     const btn = event?.target?.closest('button') || document.querySelector('.m-pay-btn');
+    const originalHTML = btn ? btn.innerHTML : '';
     if (btn) {
       btn.innerHTML = '<div class="spinner"></div> Processing…';
       btn.classList.add('loading');
     }
     clearInterval(qrInterval);
+
+    // Card payments: go to OTP screen first
+    if (method === 'Card') {
+      setTimeout(() => {
+        if (btn) { btn.innerHTML = originalHTML; btn.classList.remove('loading'); }
+        showOtpScreen();
+      }, 1500);
+      return;
+    }
+
     setTimeout(() => {
       const txn = 'XF-' + Math.random().toString(36).slice(2,10).toUpperCase();
       document.getElementById('txnId').textContent = txn;
       document.getElementById('txnMethod').textContent = method;
       document.getElementById('payUi').style.display = 'none';
       document.getElementById('successWrap').classList.add('show');
-      if (btn) { btn.innerHTML = ''; btn.classList.remove('loading'); }
+      if (btn) { btn.innerHTML = originalHTML; btn.classList.remove('loading'); }
     }, 2000);
   }
 
+  // ── OTP screen ──
+  let otpTimer = null;
+
+  function showOtpScreen() {
+    const cardInput = document.getElementById('cardNum');
+    const val = cardInput ? cardInput.value.replace(/\s/g, '') : '';
+    const last4 = val.length >= 4 ? val.slice(-4) : '••••';
+    document.getElementById('otpCardLast').textContent = last4;
+    document.querySelectorAll('.otp-digit').forEach(el => { el.value = ''; el.classList.remove('filled'); });
+    document.getElementById('payUi').style.display = 'none';
+    document.getElementById('otpWrap').classList.add('show');
+    startOtpCountdown();
+    setTimeout(() => document.querySelector('.otp-digit')?.focus(), 60);
+  }
+
+  function startOtpCountdown() {
+    clearInterval(otpTimer);
+    let secs = 30;
+    const resendEl = document.getElementById('otpResend');
+    resendEl.innerHTML = 'Resend OTP in <span id="otpCountdown">' + secs + '</span>s';
+    otpTimer = setInterval(() => {
+      secs--;
+      const cd = document.getElementById('otpCountdown');
+      if (cd) cd.textContent = secs;
+      if (secs <= 0) {
+        clearInterval(otpTimer);
+        resendEl.innerHTML = '<span class="otp-resend-link" onclick="startOtpCountdown()">Resend OTP</span>';
+      }
+    }, 1000);
+  }
+
+  function confirmOtp() {
+    const btn = document.getElementById('otpContinueBtn');
+    const originalHTML = btn.innerHTML;
+    btn.innerHTML = '<div class="spinner"></div> Verifying…';
+    btn.classList.add('loading');
+    clearInterval(otpTimer);
+    setTimeout(() => {
+      const txn = 'XF-' + Math.random().toString(36).slice(2,10).toUpperCase();
+      document.getElementById('txnId').textContent = txn;
+      document.getElementById('txnMethod').textContent = 'Card';
+      document.getElementById('otpWrap').classList.remove('show');
+      document.getElementById('successWrap').classList.add('show');
+      btn.innerHTML = originalHTML;
+      btn.classList.remove('loading');
+    }, 1500);
+  }
+
+  function skipOtp() {
+    clearInterval(otpTimer);
+    const txn = 'XF-' + Math.random().toString(36).slice(2,10).toUpperCase();
+    document.getElementById('txnId').textContent = txn;
+    document.getElementById('txnMethod').textContent = 'Card';
+    document.getElementById('otpWrap').classList.remove('show');
+    document.getElementById('successWrap').classList.add('show');
+  }
+
   // ── Copy ──
+  const copyIconSvg = '<svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M3 11H2a1 1 0 01-1-1V2a1 1 0 011-1h8a1 1 0 011 1v1" stroke="currentColor" stroke-width="1.5"/></svg>';
+  const checkIconSvg = '<svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8l4 4 6-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   function doCopy(text, el) {
     navigator.clipboard.writeText(text).catch(()=>{});
-    el.textContent = 'Copied!';
+    el.innerHTML = checkIconSvg;
     el.style.color = 'var(--green)';
-    setTimeout(() => { el.textContent = 'Copy'; el.style.color = ''; }, 1500);
+    el.style.borderColor = 'var(--green)';
+    setTimeout(() => { el.innerHTML = copyIconSvg; el.style.color = ''; el.style.borderColor = ''; }, 1500);
   }
+
+  // ── OTP digit auto-advance ──
+  document.querySelectorAll('.otp-digit').forEach((inp, i, arr) => {
+    inp.addEventListener('input', e => {
+      const v = e.target.value.replace(/[^0-9]/g, '');
+      e.target.value = v;
+      if (v) {
+        inp.classList.add('filled');
+        if (i < arr.length - 1) arr[i + 1].focus();
+      } else {
+        inp.classList.remove('filled');
+      }
+    });
+    inp.addEventListener('keydown', e => {
+      if (e.key === 'Backspace' && !e.target.value && i > 0) arr[i - 1].focus();
+    });
+    inp.addEventListener('paste', e => {
+      e.preventDefault();
+      const pasted = (e.clipboardData || window.clipboardData).getData('text').replace(/[^0-9]/g, '');
+      [...pasted].forEach((ch, j) => { if (arr[i + j]) { arr[i + j].value = ch; arr[i + j].classList.add('filled'); } });
+      const next = arr[Math.min(i + pasted.length, arr.length - 1)];
+      if (next) next.focus();
+    });
+  });
 
   // init
   refresh();

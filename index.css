@@ -336,7 +336,7 @@ body {
   font-size: 15px;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background 0.15s;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -346,9 +346,7 @@ body {
 }
 
 .big-pay-btn:hover {
-  background: var(--gray-700);
-  transform: translateY(-1px);
-  box-shadow: 0 8px 20px rgba(18,20,29,0.2);
+  background: #1a1a2e;
 }
 
 .powered-by {
@@ -508,7 +506,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.08);
+  background: var(--blue);
+  color: white;
+  font-weight: 900;
 }
 
 .ml-merchant-name {
@@ -698,7 +698,7 @@ body {
 
 .acc-body {
   display: none;
-  padding: 4px 16px 16px;
+  padding: 16px 16px 16px;
   border-top: 1px solid var(--gray-100);
 }
 
@@ -763,22 +763,22 @@ body {
   font-weight: 600;
   color: var(--gray-600);
   margin-bottom: 14px;
-  text-align: center;
+  text-align: left;
 }
 
 .upi-app-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
   margin-bottom: 4px;
 }
 
 .upi-grid-item {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: 6px;
-  padding: 12px 8px;
+  gap: 10px;
+  padding: 12px 14px;
   border: 1.5px solid var(--gray-200);
   border-radius: 12px;
   cursor: pointer;
@@ -792,20 +792,26 @@ body {
 }
 
 .ugi-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
 }
+.ugi-icon img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  display: block;
+}
 
 .ugi-name {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
-  color: var(--gray-600);
-  text-align: center;
+  color: var(--gray-700);
+  text-align: left;
   line-height: 1.2;
 }
 
@@ -866,8 +872,9 @@ body {
 
 .upi-apps-row {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   justify-content: center;
+  align-items: center;
 }
 
 .upi-app {
@@ -883,10 +890,14 @@ body {
 .upi-app:hover { background: var(--gray-50); }
 
 .upi-app-icon {
-  width: 38px; height: 38px;
-  border-radius: 10px;
+  width: 32px; height: 32px;
   display: flex; align-items: center; justify-content: center;
   font-size: 20px;
+}
+.upi-app-icon img {
+  width: 32px; height: 32px;
+  object-fit: contain;
+  display: block;
 }
 
 .upi-app-name {
@@ -948,16 +959,38 @@ body {
 
 .form-group { margin-bottom: 16px; }
 
+.form-input.error {
+  border-color: #ef4444;
+  background: #fef2f2;
+}
+.form-input.error:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239,68,68,0.12);
+  background: white;
+}
+
+.field-error {
+  display: block;
+  font-size: 11px;
+  color: #ef4444;
+  margin-top: 4px;
+  min-height: 15px;
+  line-height: 1.3;
+}
+
 /* ── Card Panel ── */
 .card-visual {
   background: linear-gradient(140deg, #1a1f35 0%, #0e1526 60%, #172040 100%);
   border-radius: 14px;
-  padding: 20px 22px 18px;
+  padding: 18px 22px;
   margin-bottom: 22px;
-  height: 136px;
+  height: 150px;
   position: relative;
   overflow: hidden;
   box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .card-visual::before {
@@ -983,7 +1016,6 @@ body {
   width: 30px; height: 22px;
   background: linear-gradient(135deg, #c8a84b, #f0d87c, #b8922d);
   border-radius: 4px;
-  margin-bottom: 18px;
   position: relative;
 }
 .card-chip::after {
@@ -999,7 +1031,6 @@ body {
   font-weight: 500;
   color: rgba(255,255,255,0.8);
   letter-spacing: 2.5px;
-  margin-bottom: 10px;
   font-family: 'Courier New', monospace;
 }
 
@@ -1067,6 +1098,68 @@ body {
   margin-right: 4px;
 }
 
+/* ── Net Banking Panel ── */
+.nb-search {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1.5px solid var(--gray-200);
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--black);
+  outline: none;
+  margin-bottom: 12px;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+}
+.nb-search:focus { border-color: var(--blue); }
+
+.nb-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.nb-bank {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1.5px solid var(--gray-200);
+  border-radius: 10px;
+  cursor: pointer;
+  background: white;
+  transition: border-color 0.15s, background 0.15s;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--gray-700);
+}
+.nb-bank:hover {
+  border-color: var(--blue);
+  background: var(--blue-bg);
+}
+
+.nb-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 800;
+  color: white;
+  letter-spacing: 0.3px;
+}
+
+.nb-empty {
+  font-size: 13px;
+  color: var(--gray-400);
+  text-align: center;
+  padding: 16px 0 8px;
+}
+
 /* ── Bank Transfer Panel ── */
 .vban-notice {
   background: var(--blue-bg);
@@ -1118,17 +1211,20 @@ body {
 .copy-btn {
   background: none;
   border: 1px solid var(--gray-200);
-  color: var(--blue);
-  font-size: 10px;
-  font-weight: 700;
-  padding: 2px 8px;
+  color: var(--gray-400);
+  padding: 3px 6px;
   border-radius: 4px;
   cursor: pointer;
   margin-left: 8px;
   transition: all 0.15s;
-  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  line-height: 1;
 }
-.copy-btn:hover { background: var(--blue-bg); }
+.copy-btn:hover { background: var(--blue-bg); border-color: var(--blue); color: var(--blue); }
+.copy-btn svg { display: block; }
 
 .vban-modes {
   display: flex;
@@ -1196,15 +1292,11 @@ body {
 
 .success-wrap.show { display: flex; }
 
-.success-ring {
-  width: 76px; height: 76px;
-  background: linear-gradient(135deg, #16a34a, #22c55e);
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 32px;
-  margin-bottom: 22px;
-  box-shadow: 0 10px 28px rgba(22,163,74,0.25);
-  animation: popUp 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+.success-check-img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  margin-bottom: 8px;
 }
 
 @keyframes popUp {
@@ -1329,6 +1421,8 @@ body {
 
   .social-proof { max-width: 100%; }
 
+  .demo-bar { display: none !important; }
+
   .checkout-card {
     padding: 24px 20px;
     position: static;
@@ -1370,7 +1464,7 @@ body {
 
   /* Accordion on mobile: slightly tighter */
   .acc-header { padding: 12px 14px; }
-  .acc-body   { padding: 4px 12px 14px; }
+  .acc-body   { padding: 16px 12px 14px; }
   .m-content  { padding: 10px; }
 
   /* ── Mobile amount bar ── */
@@ -1384,7 +1478,8 @@ body {
     flex-shrink: 0;
     cursor: pointer;
     user-select: none;
-    z-index: 10;
+    position: relative;
+    z-index: 40;
   }
 
   .mab-info {
@@ -1729,4 +1824,118 @@ body {
   height: 100%;
   border: none;
   display: block;
+}
+
+/* ═══════════════════════════════════════
+   OTP SCREEN
+═══════════════════════════════════════ */
+
+.otp-wrap {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 32px 32px 28px;
+  text-align: center;
+  background: white;
+}
+
+.otp-wrap.show { display: flex; }
+
+.otp-art {
+  margin-bottom: 20px;
+}
+
+.otp-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--gray-900, #111827);
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+
+.otp-sub {
+  font-size: 13px;
+  color: var(--gray-500, #6b7280);
+  line-height: 1.55;
+  margin-bottom: 28px;
+  max-width: 260px;
+}
+
+.otp-inputs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.otp-digit {
+  width: 44px;
+  height: 52px;
+  border: 1.5px solid var(--gray-300, #d1d5db);
+  border-radius: 8px;
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+  color: var(--gray-900, #111827);
+  background: var(--gray-50, #f9fafb);
+  outline: none;
+  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+  caret-color: transparent;
+}
+
+.otp-digit:focus {
+  border-color: var(--blue, #3b6ef8);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(59,110,248,0.12);
+}
+
+.otp-digit.filled {
+  border-color: var(--blue, #3b6ef8);
+  background: white;
+}
+
+.otp-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 20px;
+  gap: 8px;
+}
+
+.otp-skip {
+  font-size: 13px;
+  color: var(--gray-500, #6b7280);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-color: var(--gray-300, #d1d5db);
+  transition: color 0.15s;
+}
+
+.otp-skip:hover { color: var(--gray-700, #374151); }
+
+.otp-resend {
+  font-size: 13px;
+  color: var(--gray-400, #9ca3af);
+}
+
+.otp-resend-link {
+  font-size: 13px;
+  color: var(--blue, #3b6ef8);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: opacity 0.15s;
+}
+
+.otp-resend-link:hover { opacity: 0.75; }
+
+/* Hide demo bar on touch devices (mobile phones/tablets) */
+@media (pointer: coarse) {
+  .demo-bar { display: none !important; }
 }
