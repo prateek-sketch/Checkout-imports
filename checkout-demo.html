@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Demo Checkout — Powered by Xflow</title>
+  <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+  <link rel="stylesheet" href="design-system.css" />
+  <link rel="stylesheet" href="checkout-demo.css" />
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════
+     MERCHANT PRODUCT PAGE
+══════════════════════════════════════════════ -->
+
+<nav class="merchant-nav">
+  <div class="merchant-logo">
+    <div class="logo-mark">C</div>
+    CloudSuite
+  </div>
+  <ul class="merchant-nav-links">
+    <li><a href="#">Product</a></li>
+    <li><a href="#">Pricing</a></li>
+    <li><a href="#">Enterprise</a></li>
+    <li><a href="#">Docs</a></li>
+  </ul>
+  <div class="merchant-nav-right">
+    <button class="btn-outline">Sign in</button>
+    <button class="btn-primary">Get started</button>
+  </div>
+</nav>
+
+<section class="product-page">
+  <div class="product-hero">
+    <h1>CloudSuite<br/>Business Plan</h1>
+    <p class="desc">
+      Everything your team needs to collaborate, automate, and scale — built for
+      modern businesses with users across the globe.
+    </p>
+  </div>
+
+  <div class="product-features">
+    <ul class="feature-list">
+      <li><span class="check">✓</span>Unlimited workspaces & team members</li>
+      <li><span class="check">✓</span>Advanced automation & API access</li>
+      <li><span class="check">✓</span>Priority support with 4-hour SLA</li>
+      <li><span class="check">✓</span>SSO, SAML & enterprise security controls</li>
+      <li><span class="check">✓</span>Custom domain & white-labelling</li>
+      <li><span class="check">✓</span>99.99% uptime SLA + dedicated CSM</li>
+    </ul>
+
+    <div class="social-proof">
+      <div class="avatar-stack">
+        <div class="avatar" style="background:#5e76e3;">R</div>
+        <div class="avatar" style="background:#b375bd;">S</div>
+        <div class="avatar" style="background:#dc9560;">A</div>
+        <div class="avatar" style="background:#4b7655;">P</div>
+      </div>
+      <div class="social-proof-text">
+        <strong>4,200+ teams in India</strong> trust CloudSuite
+        &nbsp;·&nbsp; ★ 4.9/5 (2.1k reviews)
+      </div>
+    </div>
+  </div>
+
+  <!-- CHECKOUT CARD -->
+  <div class="checkout-card">
+    <div class="plan-toggle">
+      <div class="plan-opt" onclick="setPlan('monthly', this)">Monthly</div>
+      <div class="plan-opt active" onclick="setPlan('annual', this)">
+        Annual <span class="save-badge">Save 35%</span>
+      </div>
+    </div>
+
+    <div class="price-display">
+      <div>
+        <span class="price-original" id="priceOriginal">INR 3,999.00</span>
+        <span style="font-size:13px;color:var(--green);font-weight:700;">35% off</span>
+      </div>
+      <div class="price-main">
+        <span class="price-currency">INR</span><span id="priceMain">2,599.00</span>
+      </div>
+      <div class="price-period" id="pricePeriod">per year · billed annually</div>
+    </div>
+
+    <div class="checkout-divider"></div>
+
+    <div class="line-items">
+      <div class="line-item">
+        <span class="li-label">Business Plan × <span id="liQty">1</span></span>
+        <span class="li-val" id="liSubtotal">INR 3,999.00</span>
+      </div>
+      <div class="line-item">
+        <span class="li-label">Annual discount</span>
+        <span class="li-val discount-val" id="liDiscount">−INR 1,400.00</span>
+      </div>
+      <div class="line-item">
+        <span class="li-label">GST (18%)</span>
+        <span class="li-val" id="liGst">INR 467.82</span>
+      </div>
+    </div>
+
+    <div class="checkout-divider"></div>
+
+    <div class="line-items" style="margin-top:10px;">
+      <div class="line-item total">
+        <span class="li-label">Total due today</span>
+        <span class="li-val" id="liTotal">INR 3,066.82</span>
+      </div>
+    </div>
+
+    <button class="big-pay-btn" style="margin-top:18px;" onclick="openModal()">
+      Pay Securely
+    </button>
+
+    <div class="powered-by">
+      Secured by <img src="http://localhost:3845/assets/9e88dba90655bb94336608daf10b74a31b34d869.svg" alt="Xflow" style="height:14px;width:48px;display:inline-block;vertical-align:middle;object-fit:contain;" />
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════
+     CHECKOUT MODAL
+══════════════════════════════════════════════ -->
+<div class="overlay" id="overlay">
+  <div class="modal" id="modal">
+
+    <!-- FULL-WIDTH HEADER -->
+    <div class="modal-header">
+      <div class="mh-title">Paying to <strong>CloudSuite Inc.</strong></div>
+      <button class="mh-close" onclick="closeModal()">✕</button>
+    </div>
+
+    <!-- MODAL BODY -->
+    <div class="modal-body">
+
+    <!-- LEFT PANEL -->
+    <div class="modal-left">
+
+      <div class="ml-top">
+        <div class="ml-merchant-row">
+          <div class="logo-mark ml-logo-mark">C</div>
+          <div>
+            <div class="ml-merchant-name">CloudSuite Inc.</div>
+            <div class="ml-product-name" id="mlProduct">Business Plan · Annual</div>
+          </div>
+        </div>
+        <div class="ml-product-desc">1 seat · billed annually<br/>Renews Apr 13, 2027</div>
+
+        <div class="ml-amount-section">
+          <div class="ml-amount-label">Amount to Pay</div>
+          <div class="ml-amount"><span class="inr-sym">INR</span><span id="mlAmount">3,066.82</span></div>
+        </div>
+
+        <div class="ml-breakdown">
+          <div class="ml-br-row">
+            <span class="lbl">Plan</span>
+            <span class="val" id="mlBrPlan">INR 2,599.00</span>
+          </div>
+          <div class="ml-br-row">
+            <span class="lbl">GST (18%)</span>
+            <span class="val" id="mlBrGst">INR 467.82</span>
+          </div>
+          <div class="ml-br-row">
+            <span class="lbl">Annual discount</span>
+            <span class="val green" id="mlBrDiscount">−INR 1,400.00</span>
+          </div>
+          <div class="ml-br-row total-row">
+            <span class="lbl">Total</span>
+            <span class="val" id="mlBrTotal">INR 3,066.82</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ml-powered-by">
+        <span>Powered by</span>
+        <img src="http://localhost:3845/assets/ec0c5b69dfe259e215a29f0f8c05a61b3f993bd8.svg" alt="Xflow" style="height:14px;width:48px;object-fit:contain;" />
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="modal-right">
+      <div class="modal-right-inner">
+
+      <!-- SUCCESS -->
+      <div class="success-wrap" id="successWrap">
+        <div class="success-ring">✓</div>
+        <div class="success-title">Payment Successful!</div>
+        <div class="success-sub">
+          Your CloudSuite Business Plan is now active. A confirmation has been sent to your email.
+        </div>
+        <div class="success-box">
+          <div class="sb-row">
+            <span class="sb-lbl">Transaction ID</span>
+            <span class="sb-val" id="txnId">XF-XXXXXXXX</span>
+          </div>
+          <div class="sb-row">
+            <span class="sb-lbl">Amount Paid</span>
+            <span class="sb-val" id="txnAmt" style="font-family:inherit;font-weight:700;color:var(--black);">INR 3,066.82</span>
+          </div>
+          <div class="sb-row">
+            <span class="sb-lbl">Method</span>
+            <span class="sb-val" id="txnMethod" style="font-family:inherit;">—</span>
+          </div>
+        </div>
+        <button class="done-btn" onclick="closeModal()">Back to CloudSuite</button>
+      </div>
+
+      <!-- PAYMENT UI -->
+      <div id="payUi" style="display:flex;flex-direction:column;flex:1;overflow:hidden;">
+        <div class="m-content">
+
+          <!-- ══ ACCORDION ══ -->
+          <div class="accordion" id="accordion">
+
+            <!-- ── UPI ── -->
+            <div class="acc-item open" id="acc-upi">
+              <div class="acc-header" onclick="toggleAccordion('upi')">
+                <div class="acc-header-left">
+                  <div>
+                    <div class="acc-title">UPI</div>
+                    <div class="acc-subtitle">GPay · PhonePe · Paytm · BHIM & more</div>
+                  </div>
+                </div>
+                <svg class="acc-chevron" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" width="18" height="18">
+                  <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="acc-body">
+
+                <!-- ─ Desktop UPI: QR + app icon reference row ─ -->
+                <div class="upi-desktop">
+                  <div class="qr-section">
+                    <div class="qr-wrap">
+                      <div class="qr-box">
+                        <div style="position:absolute;top:8.24%;right:7.94%;bottom:8.24%;left:8.53%;">
+                          <img src="http://localhost:3845/assets/eaf50f9fa344b302590335c391b99b08f6a619f1.svg" style="position:absolute;inset:0;width:100%;height:100%;display:block;" />
+                        </div>
+                        <div style="position:absolute;top:10.05%;right:9.76%;bottom:10.05%;left:10.35%;">
+                          <img src="http://localhost:3845/assets/4668b857dd48e48883267adfaa4789343cda0029.svg" style="position:absolute;inset:0;width:100%;height:100%;display:block;" />
+                        </div>
+                        <div style="position:absolute;top:10.05%;right:70.37%;bottom:70.66%;left:10.35%;">
+                          <img src="http://localhost:3845/assets/ae62aa45d4ec541c3934e8051dc8e4b9a8fcc0e8.svg" style="position:absolute;inset:0;width:100%;height:100%;display:block;" />
+                        </div>
+                        <div style="position:absolute;top:15.56%;right:75.88%;bottom:76.17%;left:15.86%;">
+                          <img src="http://localhost:3845/assets/2dbf8a5b3f2465c614f8a30a9fd2b6dd012f68fa.svg" style="position:absolute;inset:0;width:100%;height:100%;display:block;" />
+                        </div>
+                        <div style="position:absolute;top:10.05%;right:9.76%;bottom:70.66%;left:70.96%;">
+                          <img src="http://localhost:3845/assets/5bf687718bcaf0196cbfafb37a5670c233b16909.svg" style="position:absolute;inset:0;width:100%;height:100%;display:block;" />
+                        </div>
+                        <div style="position:absolute;top:15.56%;right:15.27%;bottom:76.17%;left:76.47%;">
+                          <img src="http://localhost:3845/assets/11e701ea0ee05a0ce42f2271d7d2f1a2145569ed.svg" style="position:absolute;inset:0;width:100%;height:100%;display:block;" />
+                        </div>
+                        <div style="position:absolute;top:70.66%;right:70.37%;bottom:10.05%;left:10.35%;">
+                          <img src="http://localhost:3845/assets/d41bf9b285af2e35564dfcd475c6ffdb915ad392.svg" style="position:absolute;inset:0;width:100%;height:100%;display:block;" />
+                        </div>
+                        <div style="position:absolute;top:76.17%;right:75.88%;bottom:15.56%;left:15.86%;">
+                          <img src="http://localhost:3845/assets/48da11eeaada61896498cc4a405045809cd276ee.svg" style="position:absolute;inset:0;width:100%;height:100%;display:block;" />
+                        </div>
+                      </div>
+                      <div class="qr-timer" id="qrTimer">09:47</div>
+                    </div>
+                    <div class="qr-label">Scan with any UPI app</div>
+                    <div class="qr-sub">Open your UPI app and scan to pay INR <span id="qrAmt">3,066.82</span></div>
+                  </div>
+
+                  <div class="upi-apps-label">Scan using one of these apps</div>
+                  <div class="upi-apps-row">
+                    <div class="upi-app" onclick="simulatePay('UPI — Google Pay')">
+                      <div class="upi-app-icon" style="background:#fff;border:1px solid #e5e7eb;">
+                        <svg width="24" height="24" viewBox="0 0 24 24"><text y="18" font-size="18">G</text></svg>
+                      </div>
+                      <div class="upi-app-name">GPay</div>
+                    </div>
+                    <div class="upi-app" onclick="simulatePay('UPI — PhonePe')">
+                      <div class="upi-app-icon" style="background:#5f259f;">
+                        <svg width="24" height="24" viewBox="0 0 24 24"><text y="18" fill="white" font-size="15" font-weight="bold">Pe</text></svg>
+                      </div>
+                      <div class="upi-app-name">PhonePe</div>
+                    </div>
+                    <div class="upi-app" onclick="simulatePay('UPI — Paytm')">
+                      <div class="upi-app-icon" style="background:#00baf2;">
+                        <svg width="24" height="24" viewBox="0 0 24 24"><text y="18" fill="white" font-size="12" font-weight="bold">Pay</text></svg>
+                      </div>
+                      <div class="upi-app-name">Paytm</div>
+                    </div>
+                    <div class="upi-app" onclick="simulatePay('UPI — BHIM')">
+                      <div class="upi-app-icon" style="background:#0f3d6b;">
+                        <svg width="24" height="24" viewBox="0 0 24 24"><text y="17" fill="white" font-size="11" font-weight="bold">BHIM</text></svg>
+                      </div>
+                      <div class="upi-app-name">BHIM</div>
+                    </div>
+                  </div>
+
+                  <div class="upi-divider"><span>or</span></div>
+
+                  <button class="upi-id-link" onclick="toggleDesktopUpiId(this)">Enter UPI ID instead →</button>
+                  <div id="desktopUpiIdForm" style="display:none;margin-top:12px;">
+                    <div class="upi-id-hint">
+                      <span>💡</span>
+                      <span>Enter any UPI ID format like <code>name@okicici</code> or <code>9999999999@upi</code></span>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">UPI ID / VPA</label>
+                      <input class="form-input" type="text" placeholder="yourname@okicici" id="upiIdInput" />
+                    </div>
+                    <button class="m-pay-btn" onclick="simulatePay('UPI ID')">
+                      Verify & Pay INR <span id="upiBtnAmt">3,066.82</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- ─ Mobile UPI: App selection grid ─ -->
+                <div class="upi-mobile">
+                  <p class="upi-mobile-hint">Select your UPI app to pay INR <span class="upi-mobile-amt">3,066.82</span></p>
+                  <div class="upi-app-grid">
+                    <div class="upi-grid-item" onclick="simulatePay('UPI — Google Pay')">
+                      <div class="ugi-icon" style="background:#fff;border:1.5px solid #e5e7eb;">
+                        <svg width="26" height="26" viewBox="0 0 24 24"><text y="18" font-size="18">G</text></svg>
+                      </div>
+                      <div class="ugi-name">Google Pay</div>
+                    </div>
+                    <div class="upi-grid-item" onclick="simulatePay('UPI — PhonePe')">
+                      <div class="ugi-icon" style="background:#5f259f;">
+                        <svg width="26" height="26" viewBox="0 0 24 24"><text y="18" fill="white" font-size="15" font-weight="bold">Pe</text></svg>
+                      </div>
+                      <div class="ugi-name">PhonePe</div>
+                    </div>
+                    <div class="upi-grid-item" onclick="simulatePay('UPI — Paytm')">
+                      <div class="ugi-icon" style="background:#00baf2;">
+                        <svg width="26" height="26" viewBox="0 0 24 24"><text y="18" fill="white" font-size="12" font-weight="bold">Pay</text></svg>
+                      </div>
+                      <div class="ugi-name">Paytm</div>
+                    </div>
+                    <div class="upi-grid-item" onclick="simulatePay('UPI — CRED')">
+                      <div class="ugi-icon" style="background:#1c1c1c;">
+                        <svg width="26" height="26" viewBox="0 0 24 24"><text y="17" fill="white" font-size="13" font-weight="bold">C</text></svg>
+                      </div>
+                      <div class="ugi-name">CRED</div>
+                    </div>
+                    <div class="upi-grid-item" onclick="simulatePay('UPI — BHIM')">
+                      <div class="ugi-icon" style="background:#0f3d6b;">
+                        <svg width="26" height="26" viewBox="0 0 24 24"><text y="17" fill="white" font-size="9" font-weight="bold">BHIM</text></svg>
+                      </div>
+                      <div class="ugi-name">BHIM</div>
+                    </div>
+                    <div class="upi-grid-item" onclick="simulatePay('UPI App')">
+                      <div class="ugi-icon" style="background:var(--gray-100);color:var(--gray-500);font-size:18px;font-weight:700;">···</div>
+                      <div class="ugi-name">More Apps</div>
+                    </div>
+                  </div>
+
+                  <div class="upi-divider"><span>or</span></div>
+
+                  <div class="upi-id-hint">
+                    <span>💡</span>
+                    <span>Enter any UPI ID like <code>name@okicici</code> or <code>9999999999@upi</code></span>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">UPI ID / VPA</label>
+                    <input class="form-input" type="text" placeholder="yourname@okicici" id="upiIdMobile" />
+                  </div>
+                  <button class="m-pay-btn" onclick="simulatePay('UPI ID')">
+                    Verify & Pay INR <span class="upi-mobile-amt">3,066.82</span>
+                  </button>
+                </div>
+
+              </div><!-- acc-body -->
+            </div><!-- acc-item upi -->
+
+            <!-- ── Card ── -->
+            <div class="acc-item" id="acc-card">
+              <div class="acc-header" onclick="toggleAccordion('card')">
+                <div class="acc-header-left">
+                  <div>
+                    <div class="acc-title">Card</div>
+                    <div class="acc-subtitle">Credit or Debit card</div>
+                  </div>
+                </div>
+                <svg class="acc-chevron" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" width="18" height="18">
+                  <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="acc-body">
+                <div class="accepted-networks">
+                  <span class="accepted-label">Accepted:</span>
+                  <span class="network-chip">VISA</span>
+                  <span class="network-chip">MC</span>
+                  <span class="network-chip">AMEX</span>
+                  <span class="network-chip">RuPay</span>
+                </div>
+
+                <div class="demo-hint">
+                  <span>💡</span>
+                  <span>Demo — use test card <code>4111 1111 1111 1111</code>, any future date, any CVV.</span>
+                </div>
+
+                <div class="card-visual">
+                  <div class="card-chip"></div>
+                  <div class="card-num-display" id="cvCardNum">•••• •••• •••• ••••</div>
+                  <div class="card-foot">
+                    <div class="card-foot-field">
+                      <div class="cf-label">Card Holder</div>
+                      <div class="cf-val" id="cvName">YOUR NAME</div>
+                    </div>
+                    <div class="card-foot-field">
+                      <div class="cf-label">Expires</div>
+                      <div class="cf-val" id="cvExp">MM/YY</div>
+                    </div>
+                    <div class="card-network-badge" id="cvNetwork">—</div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Card Number</label>
+                  <div class="card-type-wrap">
+                    <input class="form-input" id="cardNum" type="text" inputmode="numeric" maxlength="19"
+                      placeholder="1234  5678  9012  3456" oninput="fmtCard(this)" />
+                    <span class="card-type-icon" id="cardIcon"></span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Cardholder Name</label>
+                  <input class="form-input" id="cardHolder" type="text" placeholder="Priya Sharma"
+                    oninput="document.getElementById('cvName').textContent = this.value.toUpperCase() || 'YOUR NAME'" />
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">Expiry</label>
+                    <input class="form-input" id="cardExp" type="text" inputmode="numeric" maxlength="5"
+                      placeholder="MM / YY" oninput="fmtExpiry(this)" />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">CVV</label>
+                    <input class="form-input" id="cardCvv" type="password" inputmode="numeric" maxlength="4" placeholder="•••" />
+                  </div>
+                </div>
+
+                <button class="m-pay-btn" onclick="simulatePay('Card')">
+                  Pay INR <span id="cardBtnAmt">3,066.82</span>
+                </button>
+              </div><!-- acc-body -->
+            </div><!-- acc-item card -->
+
+            <!-- ── Bank Transfer ── -->
+            <div class="acc-item" id="acc-bank">
+              <div class="acc-header" onclick="toggleAccordion('bank')">
+                <div class="acc-header-left">
+                  <div>
+                    <div class="acc-title">Bank Transfer</div>
+                    <div class="acc-subtitle">NEFT · RTGS · IMPS</div>
+                  </div>
+                </div>
+                <svg class="acc-chevron" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" width="18" height="18">
+                  <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="acc-body">
+                <div class="vban-notice">
+                  <span>Transfer funds to the Virtual Bank Account below. Your plan activates within <strong>30 minutes</strong> of receipt. Supports NEFT · RTGS · IMPS.</span>
+                </div>
+
+                <div class="vban-modes">
+                  <div class="mode-badge"><div class="dot"></div> NEFT</div>
+                  <div class="mode-badge"><div class="dot"></div> RTGS</div>
+                  <div class="mode-badge"><div class="dot"></div> IMPS</div>
+                </div>
+
+                <div class="vban-info" style="margin-top:12px;">
+                  <div class="vban-header">Virtual Bank Account Details</div>
+                  <div class="vban-row">
+                    <span class="vr-label">Account Number</span>
+                    <span class="vr-val">XFLOW8824001991 <button class="copy-btn" onclick="doCopy('XFLOW8824001991', this)">Copy</button></span>
+                  </div>
+                  <div class="vban-row">
+                    <span class="vr-label">IFSC Code</span>
+                    <span class="vr-val">HSBC0110005 <button class="copy-btn" onclick="doCopy('HSBC0110005', this)">Copy</button></span>
+                  </div>
+                  <div class="vban-row">
+                    <span class="vr-label">Account Name</span>
+                    <span class="vr-val" style="font-family:inherit;">Xflow Payments Pvt Ltd</span>
+                  </div>
+                  <div class="vban-row">
+                    <span class="vr-label">Bank</span>
+                    <span class="vr-val" style="font-family:inherit;">HSBC India</span>
+                  </div>
+                  <div class="vban-row">
+                    <span class="vr-label">Exact Amount</span>
+                    <span class="vr-val amount" id="vbanAmt">INR 3,066.82 <button class="copy-btn" onclick="doCopy('3066.82', this)">Copy</button></span>
+                  </div>
+                </div>
+
+                <p style="font-size:12px;color:var(--gray-400);line-height:1.6;margin-bottom:16px;">
+                  ⚠️ Transfer the <strong>exact amount</strong> to ensure automatic reconciliation. Include order reference <code style="background:var(--gray-100);padding:1px 5px;border-radius:3px;font-size:11px;">CS-<span id="vbanRef">DEMO2025</span></code> in remarks.
+                </p>
+
+                <button class="m-pay-btn" onclick="simulatePay('Bank Transfer (IMPS)')">
+                  I've Completed the Transfer
+                </button>
+              </div><!-- acc-body -->
+            </div><!-- acc-item bank -->
+
+          </div><!-- accordion -->
+
+        </div><!-- m-content -->
+      </div><!-- payUi -->
+
+      </div><!-- modal-right-inner -->
+    </div><!-- modal-right -->
+
+    </div><!-- modal-body -->
+
+    <!-- MOBILE AMOUNT BAR -->
+    <div class="mobile-amt-bar" id="mobileAmtBar" onclick="toggleMobileSheet()">
+      <div class="mab-info">
+        <span class="mab-label">Amount to pay</span>
+        <span class="mab-amount">INR <span id="mobileAmt">3,066.82</span></span>
+      </div>
+      <svg class="mab-chevron" id="mabChevron" viewBox="0 0 16 16" fill="none" width="20" height="20">
+        <path d="M4 10l4-4 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <!-- MOBILE BREAKDOWN SHEET -->
+    <div class="mobile-sheet" id="mobileSheet">
+      <div class="mobile-sheet-handle"></div>
+      <div class="ms-title">Order Summary</div>
+      <div class="ms-rows">
+        <div class="ms-row"><span>Plan</span><span id="msBrPlan">INR 2,599.00</span></div>
+        <div class="ms-row"><span>GST (18%)</span><span id="msBrGst">INR 467.82</span></div>
+        <div class="ms-row ms-green"><span>Annual discount</span><span id="msBrDiscount">−INR 1,400.00</span></div>
+        <div class="ms-row ms-total"><span>Total</span><span id="msBrTotal">INR 3,066.82</span></div>
+      </div>
+    </div>
+
+  </div><!-- modal -->
+</div><!-- overlay -->
+
+
+<!-- ══════════════════════════════════════════════
+     DEMO BAR (device toggle + autofill toggle)
+══════════════════════════════════════════════ -->
+<div class="demo-bar" id="demoBar">
+
+  <!-- Auto-fill pill -->
+  <div class="autofill-pill" id="autofillPill" onclick="toggleAutofill()">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+    </svg>
+    <span class="af-label">Auto-fill</span>
+    <div class="af-switch" id="afSwitch"></div>
+  </div>
+
+  <!-- Device view pill -->
+  <div class="device-toggle" id="deviceToggle">
+    <span class="dt-label">Demo for</span>
+    <div class="dt-segment">
+      <button class="dt-btn active" id="dtDesktop" onclick="setDeviceView('desktop')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="3" width="20" height="14" rx="2"/>
+          <polyline points="8 21 12 17 16 21"/>
+          <line x1="12" y1="17" x2="12" y2="21"/>
+        </svg>
+        Desktop
+      </button>
+      <button class="dt-btn" id="dtMobile" onclick="setDeviceView('mobile')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="5" y="2" width="14" height="20" rx="2"/>
+          <circle cx="12" cy="18" r="1" fill="currentColor" stroke="none"/>
+        </svg>
+        Mobile
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PHONE PREVIEW OVERLAY
+══════════════════════════════════════════════ -->
+<div class="phone-overlay" id="phoneOverlay" onclick="handlePhoneOverlayClick(event)">
+  <div class="phone-frame" id="phoneFrame">
+    <div class="phone-shell">
+      <div class="phone-screen-wrap">
+        <div class="phone-island"></div>
+        <iframe id="phoneIframe" class="phone-screen" src="" title="Mobile preview"></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  // ── Embed detection: hide chrome when loaded inside phone preview ──
+  if (new URLSearchParams(window.location.search).get('embed') === '1') {
+    document.getElementById('demoBar').style.display = 'none';
+    document.getElementById('phoneOverlay').style.display = 'none';
+  }
+
+  // ── Device view toggle ──
+  function setDeviceView(view) {
+    const overlay   = document.getElementById('phoneOverlay');
+    const iframe    = document.getElementById('phoneIframe');
+    const dtDesktop = document.getElementById('dtDesktop');
+    const dtMobile  = document.getElementById('dtMobile');
+
+    if (view === 'mobile') {
+      dtDesktop.classList.remove('active');
+      dtMobile.classList.add('active');
+      if (!iframe.src || !iframe.src.includes('embed=1')) {
+        iframe.src = window.location.pathname + '?embed=1';
+      }
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    } else {
+      dtDesktop.classList.add('active');
+      dtMobile.classList.remove('active');
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  }
+
+  function handlePhoneOverlayClick(e) {
+    if (e.target === e.currentTarget) setDeviceView('desktop');
+  }
+
+  // ── Auto-fill ──
+  let autofill = false;
+
+  function toggleAutofill() {
+    autofill = !autofill;
+    document.getElementById('afSwitch').classList.toggle('on', autofill);
+    document.getElementById('autofillPill').classList.toggle('active', autofill);
+    if (autofill) doAutofill();
+  }
+
+  function doAutofill() {
+    if (!autofill) return;
+
+    // Card fields
+    const cardNum = document.getElementById('cardNum');
+    if (cardNum && cardNum.offsetParent !== null) {
+      cardNum.value = '4111 1111 1111 1111';
+      fmtCard(cardNum);
+    }
+    const cardHolder = document.getElementById('cardHolder');
+    if (cardHolder && cardHolder.offsetParent !== null) {
+      cardHolder.value = 'Priya Sharma';
+      document.getElementById('cvName').textContent = 'PRIYA SHARMA';
+    }
+    const cardExp = document.getElementById('cardExp');
+    if (cardExp && cardExp.offsetParent !== null) {
+      cardExp.value = '12 / 28';
+      document.getElementById('cvExp').textContent = '12/28';
+    }
+    const cardCvv = document.getElementById('cardCvv');
+    if (cardCvv && cardCvv.offsetParent !== null) {
+      cardCvv.value = '123';
+    }
+
+    // UPI ID (desktop + mobile)
+    const upiIdDesktop = document.getElementById('upiIdInput');
+    if (upiIdDesktop) upiIdDesktop.value = 'priya@okicici';
+    const upiIdMobile = document.getElementById('upiIdMobile');
+    if (upiIdMobile) upiIdMobile.value = 'priya@okicici';
+  }
+
+  // ── State ──
+  let plan = 'annual';
+  const PRICES = {
+    monthly:  { base: 3999, discount: 0,    label: 'per month · billed monthly' },
+    annual:   { base: 3999, discount: 1400, label: 'per year · billed annually'  }
+  };
+
+  function getPriceData() {
+    const p = PRICES[plan];
+    const net = p.base - p.discount;
+    const gst = parseFloat((net * 0.18).toFixed(2));
+    const total = parseFloat((net + gst).toFixed(2));
+    const usd = (total / 83.4).toFixed(2);
+    return { ...p, net, gst, total, usd };
+  }
+
+  function fmt(n) {
+    return n.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function setPlan(p, el) {
+    plan = p;
+    document.querySelectorAll('.plan-opt').forEach(o => o.classList.remove('active'));
+    el.classList.add('active');
+    refresh();
+  }
+
+  function refresh() {
+    const d = getPriceData();
+    // Product page
+    document.getElementById('priceMain').textContent = fmt(d.net);
+    document.getElementById('pricePeriod').textContent = d.label;
+    document.getElementById('priceOriginal').textContent = plan === 'annual' ? 'INR ' + fmt(d.base) : '';
+    document.querySelector('[id="priceOriginal"]').nextElementSibling.style.display = plan === 'annual' ? '' : 'none';
+    document.getElementById('liSubtotal').textContent = 'INR ' + fmt(d.base);
+    document.getElementById('liDiscount').textContent = plan === 'annual' ? '−INR ' + fmt(d.discount) : '—';
+    document.getElementById('liGst').textContent = 'INR ' + fmt(d.gst);
+    document.getElementById('liTotal').textContent = 'INR ' + fmt(d.total);
+    // Modal
+    document.getElementById('mlAmount').textContent = fmt(d.total);
+    document.getElementById('mlBrPlan').textContent = 'INR ' + fmt(d.net);
+    document.getElementById('mlBrGst').textContent = 'INR ' + fmt(d.gst);
+    document.getElementById('mlBrDiscount').textContent = plan === 'annual' ? '−INR ' + fmt(d.discount) : '—';
+    document.getElementById('mlBrTotal').textContent = 'INR ' + fmt(d.total);
+    document.getElementById('mlProduct').textContent = 'Business Plan · ' + (plan === 'annual' ? 'Annual' : 'Monthly');
+    // Buttons
+    const amtStr = fmt(d.total);
+    ['upiBtnAmt','cardBtnAmt'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = amtStr;
+    });
+    document.getElementById('qrAmt').textContent = amtStr;
+    document.getElementById('vbanAmt').innerHTML = 'INR ' + amtStr + ' <button class="copy-btn" onclick="doCopy(\'' + d.total + '\', this)">Copy</button>';
+    document.getElementById('txnAmt').textContent = 'INR ' + amtStr;
+    // Mobile UPI amount spans
+    document.querySelectorAll('.upi-mobile-amt').forEach(el => el.textContent = amtStr);
+    // Mobile amount bar + sheet
+    const mobileAmt = document.getElementById('mobileAmt');
+    if (mobileAmt) mobileAmt.textContent = amtStr;
+    const msBrPlan = document.getElementById('msBrPlan');
+    if (msBrPlan) msBrPlan.textContent = 'INR ' + fmt(d.net);
+    const msBrGst = document.getElementById('msBrGst');
+    if (msBrGst) msBrGst.textContent = 'INR ' + fmt(d.gst);
+    const msBrDiscount = document.getElementById('msBrDiscount');
+    if (msBrDiscount) msBrDiscount.textContent = plan === 'annual' ? '−INR ' + fmt(d.discount) : '—';
+    const msBrTotal = document.getElementById('msBrTotal');
+    if (msBrTotal) msBrTotal.textContent = 'INR ' + fmt(d.total);
+  }
+
+  // ── Modal ──
+  function openModal() {
+    refresh();
+    document.getElementById('overlay').classList.add('open');
+    document.getElementById('successWrap').classList.remove('show');
+    document.getElementById('payUi').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    // Reset accordion: UPI open by default
+    document.querySelectorAll('.acc-item').forEach(item => item.classList.remove('open'));
+    document.getElementById('acc-upi').classList.add('open');
+    // Hide desktop UPI ID form
+    const duf = document.getElementById('desktopUpiIdForm');
+    if (duf) duf.style.display = 'none';
+    startQrTimer();
+    if (autofill) setTimeout(doAutofill, 60);
+  }
+
+  function closeModal() {
+    document.getElementById('overlay').classList.remove('open');
+    document.body.style.overflow = '';
+    clearInterval(qrInterval);
+    resetCardForm();
+    // Reset mobile sheet
+    document.getElementById('mobileSheet').classList.remove('open');
+    document.getElementById('mabChevron').classList.remove('open');
+  }
+
+  // ── Mobile breakdown sheet ──
+  function toggleMobileSheet() {
+    document.getElementById('mobileSheet').classList.toggle('open');
+    document.getElementById('mabChevron').classList.toggle('open');
+  }
+
+  function handleOverlay(e) {
+    if (e.target === document.getElementById('overlay')) closeModal();
+  }
+
+  // ── Accordion ──
+  function toggleAccordion(name) {
+    const target = document.getElementById('acc-' + name);
+    const isOpen = target.classList.contains('open');
+    // Close all
+    document.querySelectorAll('.acc-item').forEach(item => item.classList.remove('open'));
+    // Open clicked if it was closed
+    if (!isOpen) target.classList.add('open');
+    // Fill newly opened panel
+    if (autofill) setTimeout(doAutofill, 30);
+  }
+
+  // ── Desktop UPI ID toggle ──
+  function toggleDesktopUpiId(btn) {
+    const form = document.getElementById('desktopUpiIdForm');
+    const isVisible = form.style.display !== 'none';
+    form.style.display = isVisible ? 'none' : 'block';
+    btn.textContent = isVisible ? 'Enter UPI ID instead →' : '← Back to QR';
+    if (autofill && !isVisible) setTimeout(doAutofill, 30);
+  }
+
+  // QR countdown timer
+  let qrInterval = null;
+  let qrSeconds = 600;
+
+  function startQrTimer() {
+    qrSeconds = 600;
+    clearInterval(qrInterval);
+    qrInterval = setInterval(() => {
+      qrSeconds--;
+      if (qrSeconds <= 0) { clearInterval(qrInterval); return; }
+      const m = String(Math.floor(qrSeconds / 60)).padStart(2, '0');
+      const s = String(qrSeconds % 60).padStart(2, '0');
+      document.getElementById('qrTimer').textContent = m + ':' + s;
+    }, 1000);
+  }
+
+  // ── Card formatting ──
+  function fmtCard(input) {
+    let v = input.value.replace(/\D/g, '').slice(0, 16);
+    input.value = v.replace(/(.{4})/g, '$1 ').trim();
+    const d = v.padEnd(16, '•').replace(/(.{4})/g, '$1 ').trim();
+    document.getElementById('cvCardNum').textContent = d || '•••• •••• •••• ••••';
+    // detect network
+    let net = '—', icon = '';
+    if (v.startsWith('4'))           { net = 'VISA';   icon = ''; }
+    else if (/^5[1-5]/.test(v) || /^2[2-7]/.test(v)) { net = 'MC'; icon = ''; }
+    else if (/^3[47]/.test(v))       { net = 'AMEX';  icon = ''; }
+    else if (/^6[0-9]/.test(v))      { net = 'RuPay'; icon = ''; }
+    document.getElementById('cvNetwork').textContent = net;
+  }
+
+  function fmtExpiry(input) {
+    let v = input.value.replace(/\D/g,'').slice(0,4);
+    if (v.length >= 3) v = v.slice(0,2) + ' / ' + v.slice(2);
+    input.value = v;
+    document.getElementById('cvExp').textContent = input.value || 'MM/YY';
+  }
+
+  function resetCardForm() {
+    ['cardNum','cardHolder','cardExp','cardCvv'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = '';
+    });
+    document.getElementById('cvCardNum').textContent = '•••• •••• •••• ••••';
+    document.getElementById('cvName').textContent = 'YOUR NAME';
+    document.getElementById('cvExp').textContent = 'MM/YY';
+    document.getElementById('cvNetwork').textContent = '—';
+  }
+
+  // ── Simulate payment ──
+  function simulatePay(method) {
+    const btn = event?.target?.closest('button') || document.querySelector('.m-pay-btn');
+    if (btn) {
+      btn.innerHTML = '<div class="spinner"></div> Processing…';
+      btn.classList.add('loading');
+    }
+    clearInterval(qrInterval);
+    setTimeout(() => {
+      const txn = 'XF-' + Math.random().toString(36).slice(2,10).toUpperCase();
+      document.getElementById('txnId').textContent = txn;
+      document.getElementById('txnMethod').textContent = method;
+      document.getElementById('payUi').style.display = 'none';
+      document.getElementById('successWrap').classList.add('show');
+      if (btn) { btn.innerHTML = ''; btn.classList.remove('loading'); }
+    }, 2000);
+  }
+
+  // ── Copy ──
+  function doCopy(text, el) {
+    navigator.clipboard.writeText(text).catch(()=>{});
+    el.textContent = 'Copied!';
+    el.style.color = 'var(--green)';
+    setTimeout(() => { el.textContent = 'Copy'; el.style.color = ''; }, 1500);
+  }
+
+  // init
+  refresh();
+</script>
+</body>
+</html>
