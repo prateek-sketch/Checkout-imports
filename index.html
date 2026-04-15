@@ -563,7 +563,6 @@
   <div class="phone-frame" id="phoneFrame">
     <div class="phone-shell">
       <div class="phone-screen-wrap">
-        <div class="phone-island"></div>
         <iframe id="phoneIframe" class="phone-screen" src="" title="Mobile preview"></iframe>
       </div>
     </div>
@@ -588,8 +587,12 @@
     if (view === 'mobile') {
       dtDesktop.classList.remove('active');
       dtMobile.classList.add('active');
+      const embedUrl = window.location.pathname + '?embed=1';
       if (!iframe.src || !iframe.src.includes('embed=1')) {
-        iframe.src = window.location.pathname + '?embed=1';
+        iframe.src = embedUrl;
+        iframe.onload = () => syncAutofillToIframe();
+      } else {
+        syncAutofillToIframe();
       }
       overlay.classList.add('open');
       document.body.style.overflow = 'hidden';
@@ -605,6 +608,13 @@
     if (e.target === e.currentTarget) setDeviceView('desktop');
   }
 
+  function syncAutofillToIframe() {
+    const iframe = document.getElementById('phoneIframe');
+    if (iframe && iframe.contentWindow) {
+      iframe.contentWindow.postMessage({ type: 'xflow-autofill', enabled: autofill }, '*');
+    }
+  }
+
   // ── Auto-fill ──
   let autofill = false;
 
@@ -612,39 +622,63 @@
     autofill = !autofill;
     document.getElementById('afSwitch').classList.toggle('on', autofill);
     document.getElementById('autofillPill').classList.toggle('active', autofill);
-    if (autofill) doAutofill();
+    autofill ? doAutofill() : clearAutofill();
+    syncAutofillToIframe();
   }
 
   function doAutofill() {
-    if (!autofill) return;
-
-    // Card fields
     const cardNum = document.getElementById('cardNum');
-    if (cardNum && cardNum.offsetParent !== null) {
-      cardNum.value = '4111 1111 1111 1111';
-      fmtCard(cardNum);
-    }
+    if (cardNum) { cardNum.value = '4111 1111 1111 1111'; fmtCard(cardNum); }
+
     const cardHolder = document.getElementById('cardHolder');
-    if (cardHolder && cardHolder.offsetParent !== null) {
+    if (cardHolder) {
       cardHolder.value = 'Priya Sharma';
       document.getElementById('cvName').textContent = 'PRIYA SHARMA';
     }
     const cardExp = document.getElementById('cardExp');
-    if (cardExp && cardExp.offsetParent !== null) {
+    if (cardExp) {
       cardExp.value = '12 / 28';
       document.getElementById('cvExp').textContent = '12/28';
     }
     const cardCvv = document.getElementById('cardCvv');
-    if (cardCvv && cardCvv.offsetParent !== null) {
-      cardCvv.value = '123';
-    }
+    if (cardCvv) cardCvv.value = '123';
 
-    // UPI ID (desktop + mobile)
-    const upiIdDesktop = document.getElementById('upiIdInput');
-    if (upiIdDesktop) upiIdDesktop.value = 'priya@okicici';
-    const upiIdMobile = document.getElementById('upiIdMobile');
-    if (upiIdMobile) upiIdMobile.value = 'priya@okicici';
+    const upiDesktop = document.getElementById('upiIdInput');
+    if (upiDesktop) upiDesktop.value = 'priya@okicici';
+    const upiMobile = document.getElementById('upiIdMobile');
+    if (upiMobile) upiMobile.value = 'priya@okicici';
   }
+
+  function clearAutofill() {
+    const cardNum = document.getElementById('cardNum');
+    if (cardNum) { cardNum.value = ''; fmtCard(cardNum); }
+
+    const cardHolder = document.getElementById('cardHolder');
+    if (cardHolder) {
+      cardHolder.value = '';
+      document.getElementById('cvName').textContent = 'YOUR NAME';
+    }
+    const cardExp = document.getElementById('cardExp');
+    if (cardExp) {
+      cardExp.value = '';
+      document.getElementById('cvExp').textContent = 'MM/YY';
+    }
+    const cardCvv = document.getElementById('cardCvv');
+    if (cardCvv) cardCvv.value = '';
+
+    const upiDesktop = document.getElementById('upiIdInput');
+    if (upiDesktop) upiDesktop.value = '';
+    const upiMobile = document.getElementById('upiIdMobile');
+    if (upiMobile) upiMobile.value = '';
+  }
+
+  // ── Listen for autofill commands from parent (embed/iframe mode) ──
+  window.addEventListener('message', function(e) {
+    if (e.data && e.data.type === 'xflow-autofill') {
+      autofill = e.data.enabled;
+      autofill ? doAutofill() : clearAutofill();
+    }
+  });
 
   // ── State ──
   let plan = 'annual';
