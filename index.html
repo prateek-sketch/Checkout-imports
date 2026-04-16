@@ -68,36 +68,26 @@
   <div class="checkout-card">
     <div class="plan-toggle">
       <div class="plan-opt" onclick="setPlan('monthly', this)">Monthly</div>
-      <div class="plan-opt active" onclick="setPlan('annual', this)">
-        Annual <span class="save-badge">Save 35%</span>
-      </div>
+      <div class="plan-opt active" onclick="setPlan('lifetime', this)">Lifetime</div>
     </div>
 
     <div class="price-display">
-      <div>
-        <span class="price-original" id="priceOriginal">INR 3,999.00</span>
-        <span style="font-size:13px;color:var(--green);font-weight:700;">35% off</span>
-      </div>
       <div class="price-main">
-        <span class="price-currency">INR</span><span id="priceMain">2,599.00</span>
+        <span class="price-currency">INR</span><span id="priceMain">14,999.00</span>
       </div>
-      <div class="price-period" id="pricePeriod">per year · billed annually</div>
+      <div class="price-period" id="pricePeriod">pay once, use forever</div>
     </div>
 
     <div class="checkout-divider"></div>
 
     <div class="line-items">
       <div class="line-item">
-        <span class="li-label">Business Plan × <span id="liQty">12 months</span></span>
-        <span class="li-val" id="liSubtotal">INR 3,999.00</span>
+        <span class="li-label" id="liLabel">Business Plan · Lifetime</span>
+        <span class="li-val" id="liSubtotal">INR 14,999.00</span>
       </div>
-      <div class="line-item">
-        <span class="li-label">Annual discount</span>
-        <span class="li-val discount-val" id="liDiscount">−INR 1,400.00</span>
-      </div>
-      <div class="line-item">
+<div class="line-item">
         <span class="li-label">GST (18%)</span>
-        <span class="li-val" id="liGst">INR 467.82</span>
+        <span class="li-val" id="liGst">INR 2,699.82</span>
       </div>
     </div>
 
@@ -106,7 +96,7 @@
     <div class="line-items" style="margin-top:10px;">
       <div class="line-item total">
         <span class="li-label">Total due today</span>
-        <span class="li-val" id="liTotal">INR 3,066.82</span>
+        <span class="li-val" id="liTotal">INR 17,698.82</span>
       </div>
     </div>
 
@@ -144,39 +134,39 @@
           <div class="logo-mark ml-logo-mark">C</div>
           <div>
             <div class="ml-merchant-name">CloudSuite Inc.</div>
-            <div class="ml-product-name" id="mlProduct">Business Plan · Annual</div>
+            <div class="ml-product-name" id="mlProduct">Business Plan · Lifetime</div>
           </div>
         </div>
-        <div class="ml-product-desc">1 seat · billed annually<br/>Renews Apr 13, 2027</div>
+        <div class="ml-product-desc" id="mlProductDesc">1 seat · lifetime access</div>
 
         <div class="ml-amount-section">
           <div class="ml-amount-label">Amount to Pay</div>
-          <div class="ml-amount"><span class="inr-sym">INR</span><span id="mlAmount">3,066.82</span></div>
+          <div class="ml-amount"><span class="inr-sym">INR</span><span id="mlAmount">17,698.82</span></div>
         </div>
 
         <div class="ml-breakdown">
           <div class="ml-br-row">
             <span class="lbl">Plan cost</span>
-            <span class="val" id="mlBrPlan">INR 2,599.00</span>
-          </div>
-          <div class="ml-br-row">
-            <span class="lbl">Annual discount</span>
-            <span class="val green" id="mlBrDiscount">−INR 1,400.00</span>
+            <span class="val" id="mlBrPlan">INR 14,999.00</span>
           </div>
           <div class="ml-br-row">
             <span class="lbl">GST (18%)</span>
-            <span class="val" id="mlBrGst">INR 467.82</span>
+            <span class="val" id="mlBrGst">INR 2,699.82</span>
           </div>
           <div class="ml-br-row total-row">
             <span class="lbl">Total</span>
-            <span class="val" id="mlBrTotal">INR 3,066.82</span>
+            <span class="val" id="mlBrTotal">INR 17,698.82</span>
           </div>
         </div>
+
       </div>
 
-      <div class="ml-powered-by">
-        <span>Powered by</span>
-        <img src="assets/xflow-logo.svg" alt="Xflow" style="height:14px;width:48px;object-fit:contain;" />
+      <!-- Mandate banner — left panel footer (desktop only; mobile uses #mandateBanner in payment panel) -->
+      <div id="mandateBannerLeft" class="mandate-banner" style="display:none">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        <span>By paying, you authorise <strong>CloudSuite Inc.</strong> to charge <strong>INR 3,999 + taxes</strong> monthly. Cancel anytime from settings.</span>
       </div>
     </div>
 
@@ -235,7 +225,6 @@
           <input class="otp-digit" type="password" inputmode="numeric" maxlength="1" autocomplete="off" />
         </div>
         <div class="otp-meta">
-          <button class="otp-skip" onclick="skipOtp()">Skip OTP</button>
           <span class="otp-resend" id="otpResend">Resend OTP in <span id="otpCountdown">30</span>s</span>
         </div>
         <button class="m-pay-btn" id="otpContinueBtn" onclick="confirmOtp()">Continue</button>
@@ -254,7 +243,7 @@
                 <div class="acc-header-left">
                   <div>
                     <div class="acc-title">UPI</div>
-                    <div class="acc-subtitle">GPay · PhonePe · Paytm · BHIM & more</div>
+                    <div class="acc-subtitle">Pay using UPI apps on your phone</div>
                   </div>
                 </div>
                 <svg class="acc-chevron" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" width="18" height="18">
@@ -369,7 +358,7 @@
                 <div class="acc-header-left">
                   <div>
                     <div class="acc-title">Card</div>
-                    <div class="acc-subtitle">Credit or Debit card</div>
+                    <div class="acc-subtitle">Pay using your debit or credit card</div>
                   </div>
                 </div>
                 <svg class="acc-chevron" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" width="18" height="18">
@@ -390,22 +379,6 @@
                   <span>Demo — use test card <code>4111 1111 1111 1111</code>, any future date, any CVV.</span>
                 </div>
 
-                <div class="card-visual">
-                  <div class="card-chip"></div>
-                  <div class="card-num-display" id="cvCardNum">•••• •••• •••• ••••</div>
-                  <div class="card-foot">
-                    <div class="card-foot-field">
-                      <div class="cf-label">Card Holder</div>
-                      <div class="cf-val" id="cvName">YOUR NAME</div>
-                    </div>
-                    <div class="card-foot-field">
-                      <div class="cf-label">Expires</div>
-                      <div class="cf-val" id="cvExp">MM/YY</div>
-                    </div>
-                    <div class="card-network-badge" id="cvNetwork">—</div>
-                  </div>
-                </div>
-
                 <div class="form-group">
                   <label class="form-label">Card Number</label>
                   <div class="card-type-wrap">
@@ -419,7 +392,7 @@
                 <div class="form-group">
                   <label class="form-label">Cardholder Name</label>
                   <input class="form-input" id="cardHolder" type="text" placeholder="Priya Sharma"
-                    oninput="document.getElementById('cvName').textContent = this.value.toUpperCase() || 'YOUR NAME'; clearFieldError('cardHolder')" />
+                    oninput="clearFieldError('cardHolder')" />
                   <span class="field-error" id="errCardHolder"></span>
                 </div>
 
@@ -450,7 +423,7 @@
                 <div class="acc-header-left">
                   <div>
                     <div class="acc-title">Net Banking</div>
-                    <div class="acc-subtitle">HDFC · ICICI · SBI & more</div>
+                    <div class="acc-subtitle">Pay via your bank's internet banking</div>
                   </div>
                 </div>
                 <svg class="acc-chevron" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" width="18" height="18">
@@ -460,16 +433,23 @@
               <div class="acc-body">
                 <input class="nb-search" type="text" placeholder="Search your bank…" oninput="filterBanks(this.value)" />
                 <div class="nb-grid" id="nbGrid">
-                  <div class="nb-bank" onclick="simulatePay('Net Banking — HDFC')"><div class="nb-icon" style="background:#004c97;">HD</div><span>HDFC Bank</span></div>
-                  <div class="nb-bank" onclick="simulatePay('Net Banking — ICICI')"><div class="nb-icon" style="background:#b02a30;">IC</div><span>ICICI Bank</span></div>
-                  <div class="nb-bank" onclick="simulatePay('Net Banking — SBI')"><div class="nb-icon" style="background:#2d6bb5;">SB</div><span>State Bank of India</span></div>
-                  <div class="nb-bank" onclick="simulatePay('Net Banking — Axis')"><div class="nb-icon" style="background:#97144d;">AX</div><span>Axis Bank</span></div>
-                  <div class="nb-bank" onclick="simulatePay('Net Banking — Kotak')"><div class="nb-icon" style="background:#ee3124;">KO</div><span>Kotak Mahindra</span></div>
-                  <div class="nb-bank" onclick="simulatePay('Net Banking — Yes')"><div class="nb-icon" style="background:#004b8d;">YB</div><span>Yes Bank</span></div>
-                  <div class="nb-bank" onclick="simulatePay('Net Banking — BoB')"><div class="nb-icon" style="background:#f47920;">BB</div><span>Bank of Baroda</span></div>
-                  <div class="nb-bank" onclick="simulatePay('Net Banking — PNB')"><div class="nb-icon" style="background:#2b3990;">PN</div><span>Punjab National</span></div>
-                  <div class="nb-bank" onclick="simulatePay('Net Banking — IDFC')"><div class="nb-icon" style="background:#9b2335;">ID</div><span>IDFC First Bank</span></div>
-                  <div class="nb-bank" onclick="simulatePay('Net Banking — IndusInd')"><div class="nb-icon" style="background:#1b4f91;">IN</div><span>IndusInd Bank</span></div>
+                  <!-- Always visible: first 3 -->
+                  <div class="nb-bank" onclick="simulatePay('Net Banking — HDFC')"><img class="nb-icon" src="assets/HDFC.gif" alt="HDFC" /><span>HDFC Bank</span></div>
+                  <div class="nb-bank" onclick="simulatePay('Net Banking — ICICI')"><img class="nb-icon" src="assets/ICIC.gif" alt="ICICI" /><span>ICICI Bank</span></div>
+                  <div class="nb-bank" onclick="simulatePay('Net Banking — SBI')"><img class="nb-icon" src="assets/SBIN.gif" alt="SBI" /><span>State Bank of India</span></div>
+                  <!-- Show more tile -->
+                  <div class="nb-bank nb-show-more" id="nbShowMore" onclick="showAllBanks()">
+                    <span class="nb-more-count">+7</span>
+                    <span class="nb-more-label">Show more</span>
+                  </div>
+                  <!-- Extra banks (hidden until expanded) -->
+                  <div class="nb-bank nb-extra" style="display:none" onclick="simulatePay('Net Banking — Axis')"><img class="nb-icon" src="assets/UTIB.gif" alt="Axis" /><span>Axis Bank</span></div>
+                  <div class="nb-bank nb-extra" style="display:none" onclick="simulatePay('Net Banking — Kotak')"><img class="nb-icon" src="assets/KKBK.gif" alt="Kotak" /><span>Kotak Mahindra</span></div>
+                  <div class="nb-bank nb-extra" style="display:none" onclick="simulatePay('Net Banking — Yes')"><img class="nb-icon" src="assets/YESB.gif" alt="Yes Bank" /><span>Yes Bank</span></div>
+                  <div class="nb-bank nb-extra" style="display:none" onclick="simulatePay('Net Banking — BoB')"><img class="nb-icon" src="assets/BARB.gif" alt="Bank of Baroda" /><span>Bank of Baroda</span></div>
+                  <div class="nb-bank nb-extra" style="display:none" onclick="simulatePay('Net Banking — PNB')"><img class="nb-icon" src="assets/PUNB.gif" alt="PNB" /><span>Punjab National</span></div>
+                  <div class="nb-bank nb-extra" style="display:none" onclick="simulatePay('Net Banking — IDFC')"><img class="nb-icon" src="assets/IDFB.gif" alt="IDFC First" /><span>IDFC First Bank</span></div>
+                  <div class="nb-bank nb-extra" style="display:none" onclick="simulatePay('Net Banking — IndusInd')"><img class="nb-icon" src="assets/INDB.gif" alt="IndusInd" /><span>IndusInd Bank</span></div>
                 </div>
                 <p class="nb-empty" id="nbEmpty" style="display:none;">No banks match your search.</p>
               </div>
@@ -481,7 +461,7 @@
                 <div class="acc-header-left">
                   <div>
                     <div class="acc-title">Bank Transfer</div>
-                    <div class="acc-subtitle">NEFT · RTGS · IMPS</div>
+                    <div class="acc-subtitle">Transfer directly from your bank account</div>
                   </div>
                 </div>
                 <svg class="acc-chevron" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" width="18" height="18">
@@ -532,6 +512,14 @@
 
           </div><!-- accordion -->
 
+          <!-- MANDATE BANNER (monthly subscription notice) -->
+          <div id="mandateBanner" class="mandate-banner" style="display:none">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            <span>By paying, you authorise <strong>CloudSuite Inc.</strong> to charge <strong>INR 3,999 + taxes</strong> monthly. Cancel anytime from settings.</span>
+          </div>
+
         </div><!-- m-content -->
       </div><!-- payUi -->
 
@@ -556,10 +544,9 @@
       <div class="mobile-sheet-handle" onclick="toggleMobileSheet()"></div>
       <div class="ms-title">Order Summary</div>
       <div class="ms-rows">
-        <div class="ms-row"><span>Plan</span><span id="msBrPlan">INR 47,988.00</span></div>
-        <div class="ms-row ms-green"><span>Annual discount</span><span id="msBrDiscount">−INR 16,800.00</span></div>
-        <div class="ms-row"><span>GST (18%)</span><span id="msBrGst">INR 5,613.84</span></div>
-        <div class="ms-row ms-total"><span>Total</span><span id="msBrTotal">INR 36,801.84</span></div>
+        <div class="ms-row"><span>Plan</span><span id="msBrPlan">INR 14,999.00</span></div>
+        <div class="ms-row"><span>GST (18%)</span><span id="msBrGst">INR 2,699.82</span></div>
+        <div class="ms-row ms-total"><span>Total</span><span id="msBrTotal">INR 17,698.82</span></div>
       </div>
     </div>
 
@@ -574,9 +561,6 @@
 
   <!-- Auto-fill pill -->
   <div class="autofill-pill" id="autofillPill" onclick="toggleAutofill()">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-    </svg>
     <span class="af-label">Auto-fill</span>
     <div class="af-switch" id="afSwitch"></div>
   </div>
@@ -634,6 +618,7 @@
     const dtMobile  = document.getElementById('dtMobile');
 
     if (view === 'mobile') {
+      closeModal();
       dtDesktop.classList.remove('active');
       dtMobile.classList.add('active');
       const embedUrl = window.location.pathname + '?embed=1';
@@ -676,22 +661,16 @@
   }
 
   function doAutofill() {
+    // Card fields
     const cardNum = document.getElementById('cardNum');
     if (cardNum) { cardNum.value = '4111 1111 1111 1111'; fmtCard(cardNum); }
-
     const cardHolder = document.getElementById('cardHolder');
-    if (cardHolder) {
-      cardHolder.value = 'Priya Sharma';
-      document.getElementById('cvName').textContent = 'PRIYA SHARMA';
-    }
+    if (cardHolder) cardHolder.value = 'Priya Sharma';
     const cardExp = document.getElementById('cardExp');
-    if (cardExp) {
-      cardExp.value = '12 / 28';
-      document.getElementById('cvExp').textContent = '12/28';
-    }
+    if (cardExp) cardExp.value = '12 / 28';
     const cardCvv = document.getElementById('cardCvv');
     if (cardCvv) cardCvv.value = '123';
-
+    // UPI ID fields
     const upiDesktop = document.getElementById('upiIdInput');
     if (upiDesktop) upiDesktop.value = 'priya@okicici';
     const upiMobile = document.getElementById('upiIdMobile');
@@ -699,19 +678,13 @@
   }
 
   function clearAutofill() {
+    // Card fields
     const cardNum = document.getElementById('cardNum');
     if (cardNum) { cardNum.value = ''; fmtCard(cardNum); }
-
     const cardHolder = document.getElementById('cardHolder');
-    if (cardHolder) {
-      cardHolder.value = '';
-      document.getElementById('cvName').textContent = 'YOUR NAME';
-    }
+    if (cardHolder) cardHolder.value = '';
     const cardExp = document.getElementById('cardExp');
-    if (cardExp) {
-      cardExp.value = '';
-      document.getElementById('cvExp').textContent = 'MM/YY';
-    }
+    if (cardExp) cardExp.value = '';
     const cardCvv = document.getElementById('cardCvv');
     if (cardCvv) cardCvv.value = '';
 
@@ -730,22 +703,25 @@
   });
 
   // ── State ──
-  let plan = 'annual';
+  let plan = 'lifetime';
   const PRICES = {
-    monthly: { base: 3999, discount: 0,    months: 1,  label: 'per month · billed monthly' },
-    annual:  { base: 3999, discount: 1400, months: 12, label: 'per month · billed annually' }
+    monthly:  { base: 3999,  label: 'per month · renews monthly' },
+    lifetime: { base: 14999, label: 'pay once, use forever' }
   };
 
   function getPriceData() {
-    const p = PRICES[plan];
-    const perMonth      = p.base - p.discount;           // hero price: 2,599 or 3,999
-    const subtotal      = p.base * p.months;              // line item: 47,988 or 3,999
-    const discountTotal = p.discount * p.months;          // line item: 16,800 or 0
-    const net           = subtotal - discountTotal;       // taxable amount
-    const gst           = parseFloat((net * 0.18).toFixed(2));
-    const total         = parseFloat((net + gst).toFixed(2));
-    const usd           = (total / 83.4).toFixed(2);
-    return { ...p, perMonth, subtotal, discountTotal, net, gst, total, usd };
+    const p        = PRICES[plan];
+    const subtotal = p.base;
+    const gst      = parseFloat((subtotal * 0.18).toFixed(2));
+    const total    = parseFloat((subtotal + gst).toFixed(2));
+    const usd      = (total / 83.4).toFixed(2);
+    return { ...p, subtotal, gst, total, usd };
+  }
+
+  function getNextMonthDate() {
+    const d = new Date();
+    d.setMonth(d.getMonth() + 1);
+    return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
   }
 
   function fmt(n) {
@@ -761,45 +737,73 @@
 
   function refresh() {
     const d = getPriceData();
-    // Product page
-    document.getElementById('priceMain').textContent = fmt(d.perMonth);
+    const isMonthly = plan === 'monthly';
+
+    // ── Hero price (checkout card) ──
+    document.getElementById('priceMain').textContent = fmt(d.base);
     document.getElementById('pricePeriod').textContent = d.label;
-    document.getElementById('priceOriginal').textContent = plan === 'annual' ? 'INR ' + fmt(d.base) : '';
-    document.querySelector('[id="priceOriginal"]').nextElementSibling.style.display = plan === 'annual' ? '' : 'none';
-    document.getElementById('liQty').textContent = plan === 'annual' ? '12 months' : '1 month';
+
+    // ── Line items ──
+    document.getElementById('liLabel').textContent    = isMonthly ? 'Business Plan × 1 month' : 'Business Plan · Lifetime';
     document.getElementById('liSubtotal').textContent = 'INR ' + fmt(d.subtotal);
-    document.getElementById('liDiscount').textContent = plan === 'annual' ? '−INR ' + fmt(d.discountTotal) : '—';
-    document.getElementById('liGst').textContent = 'INR ' + fmt(d.gst);
-    document.getElementById('liTotal').textContent = 'INR ' + fmt(d.total);
-    // Modal
-    document.getElementById('mlAmount').textContent = fmt(d.total);
-    document.getElementById('mlBrPlan').textContent = 'INR ' + fmt(d.subtotal);
-    document.getElementById('mlBrGst').textContent = 'INR ' + fmt(d.gst);
-    document.getElementById('mlBrDiscount').textContent = plan === 'annual' ? '−INR ' + fmt(d.discountTotal) : '—';
-    document.getElementById('mlBrTotal').textContent = 'INR ' + fmt(d.total);
-    document.getElementById('mlProduct').textContent = 'Business Plan · ' + (plan === 'annual' ? 'Annual' : 'Monthly');
-    // Buttons
+    document.getElementById('liGst').textContent      = 'INR ' + fmt(d.gst);
+    document.getElementById('liTotal').textContent    = 'INR ' + fmt(d.total);
+
+// ── Modal left panel ──
+    document.getElementById('mlAmount').textContent      = fmt(d.total);
+    document.getElementById('mlBrPlan').textContent      = 'INR ' + fmt(d.subtotal);
+    document.getElementById('mlBrGst').textContent       = 'INR ' + fmt(d.gst);
+    document.getElementById('mlBrTotal').textContent     = 'INR ' + fmt(d.total);
+    document.getElementById('mlProduct').textContent     = 'Business Plan · ' + (isMonthly ? 'Monthly' : 'Lifetime');
+    const mlDesc = document.getElementById('mlProductDesc');
+    if (mlDesc) mlDesc.textContent = isMonthly
+      ? '1 seat · billed monthly · Renews ' + getNextMonthDate()
+      : '1 seat · lifetime access';
+
+    // ── Pay buttons ──
     const amtStr = fmt(d.total);
-    ['upiBtnAmt','cardBtnAmt'].forEach(id => {
+    ['upiBtnAmt', 'cardBtnAmt'].forEach(id => {
       const el = document.getElementById(id);
       if (el) el.textContent = amtStr;
     });
     document.getElementById('qrAmt').textContent = amtStr;
     document.getElementById('vbanAmt').innerHTML = 'INR ' + amtStr + ' <button class="copy-btn" onclick="doCopy(\'' + d.total + '\', this)" title="Copy"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M3 11H2a1 1 0 01-1-1V2a1 1 0 011-1h8a1 1 0 011 1v1" stroke="currentColor" stroke-width="1.5"/></svg></button>';
     document.getElementById('txnAmt').textContent = 'INR ' + amtStr;
-    // Mobile UPI amount spans
+
+    // ── Mobile UPI amount spans ──
     document.querySelectorAll('.upi-mobile-amt').forEach(el => el.textContent = amtStr);
-    // Mobile amount bar + sheet
+
+    // ── Mobile amount bar + sheet ──
     const mobileAmt = document.getElementById('mobileAmt');
     if (mobileAmt) mobileAmt.textContent = amtStr;
     const msBrPlan = document.getElementById('msBrPlan');
     if (msBrPlan) msBrPlan.textContent = 'INR ' + fmt(d.subtotal);
     const msBrGst = document.getElementById('msBrGst');
     if (msBrGst) msBrGst.textContent = 'INR ' + fmt(d.gst);
-    const msBrDiscount = document.getElementById('msBrDiscount');
-    if (msBrDiscount) msBrDiscount.textContent = plan === 'annual' ? '−INR ' + fmt(d.discountTotal) : '—';
     const msBrTotal = document.getElementById('msBrTotal');
     if (msBrTotal) msBrTotal.textContent = 'INR ' + fmt(d.total);
+
+    // ── Payment methods: Monthly = UPI + Cards only ──
+    ['acc-netbanking', 'acc-bank'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = isMonthly ? 'none' : '';
+    });
+    // If a hidden method was open, reset to UPI
+    if (isMonthly) {
+      const openItem = document.querySelector('.acc-item.open');
+      if (openItem && (openItem.id === 'acc-netbanking' || openItem.id === 'acc-bank')) {
+        openItem.classList.remove('open');
+        const upi = document.getElementById('acc-upi');
+        if (upi) upi.classList.add('open');
+      }
+    }
+
+    // ── Mandate banners (left panel = desktop, m-content = mobile; CSS controls which is visible) ──
+    const displayVal = isMonthly ? '' : 'none';
+    const mandateBanner = document.getElementById('mandateBanner');
+    if (mandateBanner) mandateBanner.style.display = displayVal;
+    const mandateBannerLeft = document.getElementById('mandateBannerLeft');
+    if (mandateBannerLeft) mandateBannerLeft.style.display = displayVal;
   }
 
   // ── Modal ──
@@ -810,10 +814,20 @@
     document.getElementById('otpWrap').classList.remove('show');
     clearInterval(otpTimer);
     document.getElementById('payUi').style.display = 'flex';
+    const bar = document.getElementById('mobileAmtBar');
+    if (bar) bar.style.display = '';
+    // Prevent background page scroll
+    document.documentElement.style.overflow = 'hidden';
     document.body.style.overflow = 'hidden';
     // Reset accordion: UPI open by default
     document.querySelectorAll('.acc-item').forEach(item => item.classList.remove('open'));
     document.getElementById('acc-upi').classList.add('open');
+    // Reset net banking to collapsed state
+    document.querySelectorAll('#nbGrid .nb-extra').forEach(el => el.style.display = 'none');
+    const nbShowMore = document.getElementById('nbShowMore');
+    if (nbShowMore) nbShowMore.style.display = '';
+    const nbSearch = document.querySelector('.nb-search');
+    if (nbSearch) nbSearch.value = '';
     // Hide UPI ID forms and restore link buttons
     const duf = document.getElementById('desktopUpiIdForm');
     if (duf) duf.style.display = 'none';
@@ -826,12 +840,12 @@
 
   function closeModal() {
     document.getElementById('overlay').classList.remove('open');
+    document.documentElement.style.overflow = '';
     document.body.style.overflow = '';
     clearInterval(qrInterval);
     clearInterval(otpTimer);
     document.getElementById('otpWrap').classList.remove('show');
     resetCardForm();
-    // Reset mobile sheet
     document.getElementById('mobileSheet').classList.remove('open');
     document.getElementById('mabChevron').classList.remove('open');
   }
@@ -858,17 +872,35 @@
     if (autofill) setTimeout(doAutofill, 30);
   }
 
+  // ── Net Banking: expand all banks ──
+  function showAllBanks() {
+    document.querySelectorAll('#nbGrid .nb-extra').forEach(el => el.style.display = '');
+    const sm = document.getElementById('nbShowMore');
+    if (sm) sm.style.display = 'none';
+  }
+
   // ── Net Banking search filter ──
   function filterBanks(q) {
     const term = q.toLowerCase();
-    const banks = document.querySelectorAll('#nbGrid .nb-bank');
-    let visible = 0;
-    banks.forEach(b => {
-      const match = b.textContent.toLowerCase().includes(term);
-      b.style.display = match ? '' : 'none';
-      if (match) visible++;
-    });
-    document.getElementById('nbEmpty').style.display = visible === 0 ? 'block' : 'none';
+    const smEl = document.getElementById('nbShowMore');
+    if (term) {
+      // Show all banks and hide "show more" when searching
+      document.querySelectorAll('#nbGrid .nb-extra').forEach(el => el.style.display = '');
+      if (smEl) smEl.style.display = 'none';
+      let visible = 0;
+      document.querySelectorAll('#nbGrid .nb-bank:not(#nbShowMore)').forEach(b => {
+        const match = b.textContent.toLowerCase().includes(term);
+        b.style.display = match ? '' : 'none';
+        if (match) visible++;
+      });
+      document.getElementById('nbEmpty').style.display = visible === 0 ? 'block' : 'none';
+    } else {
+      // Restore collapsed state
+      document.querySelectorAll('#nbGrid .nb-bank:not(#nbShowMore)').forEach(b => b.style.display = '');
+      document.querySelectorAll('#nbGrid .nb-extra').forEach(el => el.style.display = 'none');
+      if (smEl) smEl.style.display = '';
+      document.getElementById('nbEmpty').style.display = 'none';
+    }
   }
 
   // ── Mobile UPI ID toggle ──
@@ -906,22 +938,12 @@
   function fmtCard(input) {
     let v = input.value.replace(/\D/g, '').slice(0, 16);
     input.value = v.replace(/(.{4})/g, '$1 ').trim();
-    const d = v.padEnd(16, '•').replace(/(.{4})/g, '$1 ').trim();
-    document.getElementById('cvCardNum').textContent = d || '•••• •••• •••• ••••';
-    // detect network
-    let net = '—', icon = '';
-    if (v.startsWith('4'))           { net = 'VISA';   icon = ''; }
-    else if (/^5[1-5]/.test(v) || /^2[2-7]/.test(v)) { net = 'MC'; icon = ''; }
-    else if (/^3[47]/.test(v))       { net = 'AMEX';  icon = ''; }
-    else if (/^6[0-9]/.test(v))      { net = 'RuPay'; icon = ''; }
-    document.getElementById('cvNetwork').textContent = net;
   }
 
   function fmtExpiry(input) {
     let v = input.value.replace(/\D/g,'').slice(0,4);
     if (v.length >= 3) v = v.slice(0,2) + ' / ' + v.slice(2);
     input.value = v;
-    document.getElementById('cvExp').textContent = input.value || 'MM/YY';
   }
 
   function resetCardForm() {
@@ -930,10 +952,6 @@
       if (el) el.value = '';
       clearFieldError(id);
     });
-    document.getElementById('cvCardNum').textContent = '•••• •••• •••• ••••';
-    document.getElementById('cvName').textContent = 'YOUR NAME';
-    document.getElementById('cvExp').textContent = 'MM/YY';
-    document.getElementById('cvNetwork').textContent = '—';
   }
 
   // ── Card validation ──
@@ -992,9 +1010,15 @@
       document.getElementById('txnId').textContent = txn;
       document.getElementById('txnMethod').textContent = method;
       document.getElementById('payUi').style.display = 'none';
-      document.getElementById('successWrap').classList.add('show');
+      showSuccess();
       if (btn) { btn.innerHTML = originalHTML; btn.classList.remove('loading'); }
     }, 2000);
+  }
+
+  function showSuccess() {
+    document.getElementById('successWrap').classList.add('show');
+    const bar = document.getElementById('mobileAmtBar');
+    if (bar) bar.style.display = 'none';
   }
 
   // ── OTP screen ──
@@ -1039,7 +1063,7 @@
       document.getElementById('txnId').textContent = txn;
       document.getElementById('txnMethod').textContent = 'Card';
       document.getElementById('otpWrap').classList.remove('show');
-      document.getElementById('successWrap').classList.add('show');
+      showSuccess();
       btn.innerHTML = originalHTML;
       btn.classList.remove('loading');
     }, 1500);
@@ -1051,7 +1075,7 @@
     document.getElementById('txnId').textContent = txn;
     document.getElementById('txnMethod').textContent = 'Card';
     document.getElementById('otpWrap').classList.remove('show');
-    document.getElementById('successWrap').classList.add('show');
+    showSuccess();
   }
 
   // ── Copy ──
