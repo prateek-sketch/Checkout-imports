@@ -252,6 +252,28 @@
               </div>
               <div class="acc-body">
 
+                <!-- ─ Mandate consent block (shown when monthly plan is active) ─ -->
+                <div id="mandateConsentBlock" style="display:none">
+                  <div class="mandate-details">
+                    <div class="md-row">
+                      <span class="md-label">Mandate amount</span>
+                      <span class="md-val">INR 3,999 + taxes / month</span>
+                    </div>
+                    <div class="md-row">
+                      <span class="md-label">Frequency</span>
+                      <span class="md-val">Monthly</span>
+                    </div>
+                    <div class="md-row">
+                      <span class="md-label">Start date</span>
+                      <span class="md-val" id="mandateStartDate">—</span>
+                    </div>
+                    <div class="md-row">
+                      <span class="md-label">Valid till</span>
+                      <span class="md-val" id="mandateEndDate">—</span>
+                    </div>
+                  </div>
+                </div>
+
                 <!-- ─ Desktop UPI: QR + app icon reference row ─ -->
                 <div class="upi-desktop">
                   <div class="qr-section">
@@ -376,7 +398,10 @@
 
                 <div class="demo-hint">
                   <span>💡</span>
-                  <span>Demo — use test card <code>4111 1111 1111 1111</code>, any future date, any CVV.</span>
+                  <div class="demo-hint-body">
+                    <span>Demo — use test card <code>4111 1111 1111 1111</code>, any future date, any CVV.</span>
+                    <button class="demo-autofill-btn" onclick="doAutofill()">Auto-fill with dummy data</button>
+                  </div>
                 </div>
 
                 <div class="form-group">
@@ -399,7 +424,7 @@
                 <div class="form-row">
                   <div class="form-group">
                     <label class="form-label">Expiry</label>
-                    <input class="form-input" id="cardExp" type="text" inputmode="numeric" maxlength="5"
+                    <input class="form-input" id="cardExp" type="text" inputmode="numeric" maxlength="7"
                       placeholder="MM / YY" oninput="fmtExpiry(this); clearFieldError('cardExp')" />
                     <span class="field-error" id="errCardExp"></span>
                   </div>
@@ -520,8 +545,62 @@
             <span>By paying, you authorise <strong>CloudSuite Inc.</strong> to charge <strong>INR 3,999 + taxes</strong> monthly. Cancel anytime from settings.</span>
           </div>
 
+          <!-- MANDATE CONSENT BOTTOM SHEET -->
+          <div id="mandateSheet" class="mandate-sheet-backdrop">
+            <div class="mandate-sheet">
+              <div class="ms-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="7" width="20" height="14" rx="2"/>
+                  <path d="M16 3H8L2 7h20l-6-4z"/>
+                  <circle cx="12" cy="14" r="2"/>
+                </svg>
+              </div>
+              <div class="ms-title">You are setting up a mandate</div>
+              <div class="ms-body">
+                By confirming, you authorise <strong>CloudSuite Inc.</strong> to auto-debit
+                <strong>INR 3,999 + taxes</strong> from your account every month.
+                You can cancel anytime from account settings.
+              </div>
+              <button class="ms-confirm m-pay-btn" onclick="confirmMandate()">I understand</button>
+              <button class="ms-cancel" onclick="dismissMandateSheet()">Cancel</button>
+            </div>
+          </div><!-- mandateSheet -->
+
         </div><!-- m-content -->
       </div><!-- payUi -->
+
+      <!-- MANDATE PENDING SCREEN -->
+      <div id="mandatePendingWrap" class="mandate-pending">
+        <div class="mp-header">
+          <div class="mp-title">Complete payment in your UPI app</div>
+          <div class="mp-subtitle">Your mandate request has been sent.</div>
+        </div>
+        <div class="mp-steps">
+          <div class="mp-step">
+            <div class="mp-num">1</div>
+            <div>
+              <div class="mp-step-title">Open your UPI app</div>
+              <div class="mp-step-sub">Go to your UPI app to view the autopay mandate request.</div>
+            </div>
+          </div>
+          <div class="mp-step">
+            <div class="mp-num">2</div>
+            <div>
+              <div class="mp-step-title">Approve the CloudSuite mandate</div>
+              <div class="mp-step-sub">Tap Approve. Refresh the app if you don't see the request.</div>
+            </div>
+          </div>
+          <div class="mp-step">
+            <div class="mp-num">3</div>
+            <div>
+              <div class="mp-step-title">Come back here</div>
+              <div class="mp-step-sub">After approving, tap "I am Done" below.</div>
+            </div>
+          </div>
+        </div>
+        <div class="mp-timer">Complete all 3 steps in <strong id="mandateCountdown">07:00</strong></div>
+        <button class="m-pay-btn" onclick="completeMandatePay()">I am Done</button>
+      </div><!-- mandatePendingWrap -->
 
       </div><!-- modal-right-inner -->
     </div><!-- modal-right -->
@@ -547,6 +626,15 @@
         <div class="ms-row"><span>Plan</span><span id="msBrPlan">INR 14,999.00</span></div>
         <div class="ms-row"><span>GST (18%)</span><span id="msBrGst">INR 2,699.82</span></div>
         <div class="ms-row ms-total"><span>Total</span><span id="msBrTotal">INR 17,698.82</span></div>
+      </div>
+    </div>
+
+    <!-- ══ SPLASH ANIMATION ══ -->
+    <div id="splashWrap" class="splash-wrap hidden">
+      <div class="splash-video-box">
+        <video id="splashVideo" class="splash-video" muted playsinline preload="auto">
+          <source src="assets/Splash_animation.mp4" type="video/mp4">
+        </video>
       </div>
     </div>
 
@@ -648,6 +736,10 @@
       iframe.contentWindow.postMessage({ type: 'xflow-autofill', enabled: autofill }, '*');
     }
   }
+
+  // ── Mandate flow state ──
+  let pendingMandateMethod = null;
+  let mandateInterval = null;
 
   // ── Auto-fill ──
   let autofill = false;
@@ -804,6 +896,35 @@
     if (mandateBanner) mandateBanner.style.display = displayVal;
     const mandateBannerLeft = document.getElementById('mandateBannerLeft');
     if (mandateBannerLeft) mandateBannerLeft.style.display = displayVal;
+
+    // ── Mandate consent block (pre-pay details in UPI section) ──
+    const mcb = document.getElementById('mandateConsentBlock');
+    if (mcb) mcb.style.display = isMonthly ? '' : 'none';
+    if (isMonthly) {
+      const today = new Date();
+      const end = new Date(today);
+      end.setFullYear(end.getFullYear() + 5);
+      const fmtDate = dt => dt.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+      const sd = document.getElementById('mandateStartDate');
+      const ed = document.getElementById('mandateEndDate');
+      if (sd) sd.textContent = fmtDate(today);
+      if (ed) ed.textContent = fmtDate(end);
+    }
+  }
+
+  // ── Splash helpers ──
+  function skipSplash() {
+    const splash = document.getElementById('splashWrap');
+    if (!splash || splash.classList.contains('hidden')) return;
+    splash.classList.add('done');
+    setTimeout(() => splash.classList.add('hidden'), 560);
+  }
+
+  function resetSplash() {
+    const splash = document.getElementById('splashWrap');
+    const vid    = document.getElementById('splashVideo');
+    if (splash) splash.classList.remove('done', 'hidden');
+    if (vid)   { vid.pause(); vid.currentTime = 0; }
   }
 
   // ── Modal ──
@@ -836,6 +957,10 @@
     document.querySelectorAll('.upi-id-link').forEach(el => el.style.display = '');
     startQrTimer();
     if (autofill) setTimeout(doAutofill, 60);
+    // Show splash
+    resetSplash();
+    const vid = document.getElementById('splashVideo');
+    if (vid) { vid.playbackRate = 1.5; vid.play().catch(() => skipSplash()); }
   }
 
   function closeModal() {
@@ -844,7 +969,15 @@
     document.body.style.overflow = '';
     clearInterval(qrInterval);
     clearInterval(otpTimer);
+    clearInterval(mandateInterval);
+    mandateInterval = null;
+    pendingMandateMethod = null;
     document.getElementById('otpWrap').classList.remove('show');
+    document.getElementById('mandateSheet')?.classList.remove('open');
+    document.getElementById('mandatePendingWrap')?.classList.remove('show');
+    document.getElementById('payUi').style.display = '';
+    const mc = document.querySelector('.m-content');
+    if (mc) mc.style.overflow = '';
     resetCardForm();
     document.getElementById('mobileSheet').classList.remove('open');
     document.getElementById('mabChevron').classList.remove('open');
@@ -868,6 +1001,9 @@
     document.querySelectorAll('.acc-item').forEach(item => item.classList.remove('open'));
     // Open clicked if it was closed
     if (!isOpen) target.classList.add('open');
+    // Reset scroll so no empty area is visible after content shrinks
+    const mc = document.querySelector('.m-content');
+    if (mc) mc.scrollTop = 0;
     // Fill newly opened panel
     if (autofill) setTimeout(doAutofill, 30);
   }
@@ -988,6 +1124,13 @@
 
   // ── Simulate payment ──
   function simulatePay(method) {
+    // Monthly UPI → show mandate consent sheet before processing
+    if (plan === 'monthly' && method.startsWith('UPI')) {
+      pendingMandateMethod = method;
+      showMandateSheet();
+      return;
+    }
+
     const btn = event?.target?.closest('button') || document.querySelector('.m-pay-btn');
     const originalHTML = btn ? btn.innerHTML : '';
     if (btn) {
@@ -1019,6 +1162,59 @@
     document.getElementById('successWrap').classList.add('show');
     const bar = document.getElementById('mobileAmtBar');
     if (bar) bar.style.display = 'none';
+  }
+
+  // ── Mandate flow ──
+  function showMandateSheet() {
+    const mc = document.querySelector('.m-content');
+    if (mc) { mc.scrollTop = 0; mc.style.overflow = 'hidden'; }
+    document.getElementById('mandateSheet').classList.add('open');
+  }
+
+  function dismissMandateSheet() {
+    const mc = document.querySelector('.m-content');
+    if (mc) mc.style.overflow = '';
+    document.getElementById('mandateSheet').classList.remove('open');
+    pendingMandateMethod = null;
+  }
+
+  function confirmMandate() {
+    dismissMandateSheet();
+    showMandatePending();
+    startMandateCountdown();
+  }
+
+  function showMandatePending() {
+    document.getElementById('payUi').style.display = 'none';
+    document.getElementById('mandatePendingWrap').classList.add('show');
+    const bar = document.getElementById('mobileAmtBar');
+    if (bar) bar.style.display = 'none';
+  }
+
+  function startMandateCountdown() {
+    clearInterval(mandateInterval);
+    let secs = 7 * 60;
+    const el = document.getElementById('mandateCountdown');
+    const tick = () => {
+      const m = String(Math.floor(secs / 60)).padStart(2, '0');
+      const s = String(secs % 60).padStart(2, '0');
+      if (el) el.textContent = m + ':' + s;
+      if (secs <= 0) { clearInterval(mandateInterval); return; }
+      secs--;
+    };
+    tick();
+    mandateInterval = setInterval(tick, 1000);
+  }
+
+  function completeMandatePay() {
+    clearInterval(mandateInterval);
+    document.getElementById('mandatePendingWrap').classList.remove('show');
+    const txnId = 'XF-' + Math.random().toString(36).slice(2, 10).toUpperCase();
+    const d = getPriceData();
+    document.getElementById('txnId').textContent = txnId;
+    document.getElementById('txnAmt').textContent = 'INR ' + fmt(d.total);
+    document.getElementById('txnMethod').textContent = pendingMandateMethod || 'UPI Autopay';
+    showSuccess();
   }
 
   // ── OTP screen ──
@@ -1115,6 +1311,14 @@
 
   // init
   refresh();
+
+  // ── Splash video: auto-advance on end ──
+  (function () {
+    const vid = document.getElementById('splashVideo');
+    if (!vid) return;
+    vid.addEventListener('ended', skipSplash);
+  })();
 </script>
+
 </body>
 </html>
