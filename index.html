@@ -545,27 +545,6 @@
             <span>By paying, you authorise <strong>CloudSuite Inc.</strong> to charge <strong>INR 3,999 + taxes</strong> monthly. Cancel anytime from settings.</span>
           </div>
 
-          <!-- MANDATE CONSENT BOTTOM SHEET -->
-          <div id="mandateSheet" class="mandate-sheet-backdrop">
-            <div class="mandate-sheet">
-              <div class="ms-icon">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="2" y="7" width="20" height="14" rx="2"/>
-                  <path d="M16 3H8L2 7h20l-6-4z"/>
-                  <circle cx="12" cy="14" r="2"/>
-                </svg>
-              </div>
-              <div class="ms-title">You are setting up a mandate</div>
-              <div class="ms-body">
-                By confirming, you authorise <strong>CloudSuite Inc.</strong> to auto-debit
-                <strong>INR 3,999 + taxes</strong> from your account every month.
-                You can cancel anytime from account settings.
-              </div>
-              <button class="ms-confirm m-pay-btn" onclick="confirmMandate()">I understand</button>
-              <button class="ms-cancel" onclick="dismissMandateSheet()">Cancel</button>
-            </div>
-          </div><!-- mandateSheet -->
-
         </div><!-- m-content -->
       </div><!-- payUi -->
 
@@ -628,6 +607,27 @@
         <div class="ms-row ms-total"><span>Total</span><span id="msBrTotal">INR 17,698.82</span></div>
       </div>
     </div>
+
+    <!-- MANDATE CONSENT BOTTOM SHEET -->
+    <div id="mandateSheet" class="mandate-sheet-backdrop">
+      <div class="mandate-sheet">
+        <div class="ms-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="7" width="20" height="14" rx="2"/>
+            <path d="M16 3H8L2 7h20l-6-4z"/>
+            <circle cx="12" cy="14" r="2"/>
+          </svg>
+        </div>
+        <div class="ms-title">You are setting up a mandate</div>
+        <div class="ms-body">
+          By confirming, you authorise <strong>CloudSuite Inc.</strong> to auto-debit
+          <strong>INR 3,999 + taxes</strong> from your account every month.
+          You can cancel anytime from account settings.
+        </div>
+        <button class="ms-confirm m-pay-btn" onclick="confirmMandate()">I understand</button>
+        <button class="ms-cancel" onclick="dismissMandateSheet()">Cancel</button>
+      </div>
+    </div><!-- mandateSheet -->
 
     <!-- ══ SPLASH ANIMATION ══ -->
     <div id="splashWrap" class="splash-wrap hidden">
@@ -696,6 +696,8 @@
   if (new URLSearchParams(window.location.search).get('embed') === '1') {
     document.getElementById('demoBar').style.display = 'none';
     document.getElementById('phoneOverlay').style.display = 'none';
+    document.querySelector('.merchant-nav-right').style.display = 'none';
+    document.querySelector('.price-main').style.fontSize = '28px';
   }
 
   // ── Device view toggle ──
